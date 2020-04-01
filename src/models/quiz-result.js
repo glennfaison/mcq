@@ -1,8 +1,8 @@
 const { model, Schema } = require('mongoose');
 const collectionNames = require('../../app.config').COLLECTION_NAMES;
 
-const Quiz = require('./Quiz');
-const Question = require('./Question');
+const Quiz = require('./quiz');
+const Question = require('./question');
 
 const UserAnswerSchema = new Schema({
   questionId: {
