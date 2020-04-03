@@ -1,6 +1,26 @@
 const { model, Schema } = require('mongoose');
 const collectionNames = require('../../app.config').COLLECTION_NAMES;
 
+/**
+ *  @swagger
+ *  components:
+ *    schemas:
+ *      Course:
+ *        type: object
+ *        properties:
+ *          id:
+ *            type: string
+ *          name:
+ *            type: string
+ *          description:
+ *            type: string
+ *          courseCode:
+ *            type: string
+ *          createdBy:
+ *            type: string
+ *          _isDeleted:
+ *            type: boolean
+ */
 const CourseSchema = new Schema(
   {
     name: {

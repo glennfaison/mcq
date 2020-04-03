@@ -4,6 +4,36 @@ const collectionNames = require('../../app.config').COLLECTION_NAMES;
 const Quiz = require('./quiz');
 const Question = require('./question');
 
+/**
+ *  @swagger
+ *  components:
+ *    schemas:
+ *      UserAnswer:
+ *        type: object
+ *        properties:
+ *          id:
+ *            type: string
+ *          questionId:
+ *            type: string
+ *          question:
+ *            type: object
+ *            schema:
+ *              $ref: '#/components/schemas/Question'
+ *          correctOptionIndices:
+ *            type: array
+ *            items:
+ *              type: number
+ *          selectedOptionIndices:
+ *            type: array
+ *            items:
+ *              type: number
+ *          optionList:
+ *            type: array
+ *            items:
+ *              type: string
+ *          isCorrect:
+ *            type: boolean
+ */
 const UserAnswerSchema = new Schema({
   questionId: {
     required: true,
@@ -24,6 +54,42 @@ const UserAnswerSchema = new Schema({
   }
 });
 
+/**
+ *  @swagger
+ *  components:
+ *    schemas:
+ *      QuizResult:
+ *        type: object
+ *        properties:
+ *          id:
+ *            type: string
+ *          userId:
+ *            type: string
+ *          quizId:
+ *            type: string
+ *          quiz:
+ *            type: object
+ *            schema:
+ *              $ref: '#/components/schemas/Quiz'
+ *          score:
+ *            type: number
+ *          startedOn:
+ *            type: date
+ *          isCompleted:
+ *            type: boolean
+ *          correctOptionIndices:
+ *            type: array
+ *            items:
+ *              type: number
+ *          userAnswerList:
+ *            type: array
+ *            items:
+ *              $ref: '#/components/schemas/UserAnswer'
+ *          createdBy:
+ *            type: string
+ *          _isDeleted:
+ *            type: boolean
+ */
 const QuizResultSchema = new Schema(
   {
     userId: {

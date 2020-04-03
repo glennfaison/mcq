@@ -12,13 +12,25 @@ const collectionNames = require('../../app.config').COLLECTION_NAMES;
  *            type: string
  *          uid:
  *            type: string
- *          displayName:
- *            type: string
  *          email:
  *            type: string
- *          password:
+ *          emailVerified:
  *            type: string
- *          userRole:
+ *          displayName:
+ *            type: string
+ *          photoURL:
+ *            type: string
+ *          phoneNumber:
+ *            type: string
+ *          disabled:
+ *            type: boolean
+ *          passwordHash:
+ *            type: string
+ *          passwordSalt:
+ *            type: string
+ *          tokensValidAfterTime:
+ *            type: datetime
+ *          roleId:
  *            type: string
  */
 const UserSchema = new Schema({
@@ -69,12 +81,6 @@ const UserSchema = new Schema({
     ref: collectionNames.ROLES
   }
 }, { collection: collectionNames.USERS });
-
-UserSchema.post('save', async function (user, next) {
-  user.uid = user.id;
-  await model('User').updateOne({ _id: user.id }, { uid: user.id });
-  next();
-});
 
 const User = model(collectionNames.USERS, UserSchema);
 

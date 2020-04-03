@@ -4,6 +4,44 @@ const collectionNames = require('../../app.config').COLLECTION_NAMES;
 const Question = require('./question');
 const Topic = require('./topic');
 
+/**
+ *  @swagger
+ *  components:
+ *    schemas:
+ *      Quiz:
+ *        type: object
+ *        properties:
+ *          id:
+ *            type: string
+ *          name:
+ *            type: string
+ *          description:
+ *            type: string
+ *          timeAllowed:
+ *            type: number
+ *          questionCount:
+ *            type: string
+ *          topicIdList:
+ *            type: array
+ *            items:
+ *              type: string
+ *          questionIdList:
+ *            type: array
+ *            items:
+ *              type: string
+ *          topicList:
+ *            type: array
+ *            items:
+ *              $ref: '#/components/schemas/Topic'
+ *          questionList:
+ *            type: array
+ *            items:
+ *              $ref: '#/components/schemas/Question'
+ *          createdBy:
+ *            type: string
+ *          _isDeleted:
+ *            type: boolean
+ */
 const QuizSchema = new Schema(
   {
     name: {

@@ -1,9 +1,9 @@
 const { describe, it } = require('mocha');
 const { expect } = require('chai');
 
-const swaggerDef = require('../src/swagger-def');
+const swaggerDef = require('../../src/swagger-def');
 
-describe('swaggerDef module', () => {
+describe('swagger definition module', () => {
   it('should not be null or undefined', (done) => {
     expect(swaggerDef).to.not.be.null.and.not.be.undefined;
     done();
