@@ -23,6 +23,19 @@ const collectionNames = require('../../app.config').COLLECTION_NAMES;
  *          _isDeleted:
  *            type: boolean
  */
+
+/**
+ *  @typedef
+ *  {{
+ *      name: string,
+ *      description: string,
+ *      type: string,
+ *      privilegeIds: string[],
+ *      _isDeleted: boolean,
+ *    }
+ *    & import('mongoose').MongooseDocument
+ *  } QuizResult
+ */
 const RoleSchema = new Schema(
   {
     name: {

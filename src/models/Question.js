@@ -27,6 +27,20 @@ const collectionNames = require('../../app.config').COLLECTION_NAMES;
  *          _isDeleted:
  *            type: boolean
  */
+
+/**
+ *  @typedef
+ *  {{
+ *      text: string,
+ *      correctOptionIndices: string[],
+ *      optionList: string[],
+ *      topicId: string,
+ *      createdBy: string,
+ *      _isDeleted: boolean,
+ *    }
+ *    & import('mongoose').MongooseDocument
+ *  } Question
+ */
 const QuestionSchema = new Schema(
   {
     text: {

@@ -2,7 +2,7 @@ const firebaseAdmin = require('firebase-admin');
 const firebase = require('firebase');
 const mixin = require('../../helpers/mixin');
 
-/** @type {import('firebase-admin').auth.Auth} */
+/** @type {import('mongoose').Model} */
 let admin = {
   getUser: async (uid) => {
     if (!uid) { return null; }
@@ -49,7 +49,7 @@ let admin = {
   }
 };
 
-/** @type {import('firebase').auth.Auth} */
+/** @type {import('mongoose').Model} */
 let client = {};
 
 admin = mixin(firebaseAdmin.auth(), admin);

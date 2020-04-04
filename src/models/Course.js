@@ -21,6 +21,19 @@ const collectionNames = require('../../app.config').COLLECTION_NAMES;
  *          _isDeleted:
  *            type: boolean
  */
+
+/**
+ *  @typedef
+ *  {{
+ *      name: string,
+ *      description: string,
+ *      courseCode: string,
+ *      createdBy: string,
+ *      _isDeleted: boolean,
+ *    }
+ *    & import('mongoose').MongooseDocument
+ *  } Course
+ */
 const CourseSchema = new Schema(
   {
     name: {
@@ -51,6 +64,6 @@ const CourseSchema = new Schema(
   { collection: collectionNames.COURSES }
 );
 
-const Course = model(collectionNames.COURSES, CourseSchema);
+const CourseModel = model(collectionNames.COURSES, CourseSchema);
 
-module.exports = Course;
+module.exports = CourseModel;

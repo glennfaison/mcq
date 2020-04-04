@@ -42,6 +42,24 @@ const Topic = require('./topic');
  *          _isDeleted:
  *            type: boolean
  */
+
+/**
+ *  @typedef
+ *  {{
+ *      name: string,
+ *      description: string,
+ *      timeAllowed: number,
+ *      questionCount: number,
+ *      topicIdList: string[],
+ *      questionIdList: string[],
+ *      topicList: import('./topic').Topic[],
+ *      questionList: import('./question').Question[],
+ *      createdBy: string,
+ *      _isDeleted: boolean,
+ *    }
+ *    & import('mongoose').MongooseDocument
+ *  } Quiz
+ */
 const QuizSchema = new Schema(
   {
     name: {

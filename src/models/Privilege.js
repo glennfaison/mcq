@@ -21,6 +21,18 @@ const collectionNames = require('../../app.config').COLLECTION_NAMES;
  *          _isDeleted:
  *            type: boolean
  */
+
+/**
+ *  @typedef
+ *  {{
+ *      name: string,
+ *      description: string,
+ *      type: string,
+ *      _isDeleted: boolean,
+ *    }
+ *    & import('mongoose').MongooseDocument
+ *  } Privilege
+ */
 const PrivilegeSchema = new Schema(
   {
     name: {

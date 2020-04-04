@@ -90,6 +90,23 @@ const UserAnswerSchema = new Schema({
  *          _isDeleted:
  *            type: boolean
  */
+
+/**
+ *  @typedef
+ *  {{
+ *      userId: string,
+ *      quizId: string,
+ *      quiz: Quiz,
+ *      score: number,
+ *      startedOn: number,
+ *      isCompleted: boolean,
+ *      userAnswerList: string[],
+ *      createdBy: string,
+ *      _isDeleted: boolean,
+ *    }
+ *    & import('mongoose').MongooseDocument
+ *  } QuizResult
+ */
 const QuizResultSchema = new Schema(
   {
     userId: {

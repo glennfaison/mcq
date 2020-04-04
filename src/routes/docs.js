@@ -8,7 +8,10 @@ const swaggerDocument = require('../swagger-def');
  *  @swagger
  *  /api/v1/openapi.json:
  *    get:
+ *      summary: OpenAPI specifications
  *      description: Fetch the OpenAPI specifications for this API as a JSON file
+ *      tags:
+ *        - Documentation
  *      produces:
  *        - application/json
  *      responses:

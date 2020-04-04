@@ -29,9 +29,31 @@ const collectionNames = require('../../app.config').COLLECTION_NAMES;
  *          passwordSalt:
  *            type: string
  *          tokensValidAfterTime:
- *            type: datetime
+ *            type: string
+ *            format: date-time
  *          roleId:
  *            type: string
+ */
+
+/**
+ *  @typedef
+ *  {{
+ *      id: string,
+ *      uid: string,
+ *      email: string,
+ *      emailVerified: boolean,
+ *      displayName: string,
+ *      photoURL: string,
+ *      phoneNumber: string,
+ *      disabled: boolean,
+ *      passwordHash: string,
+ *      passwordSalt: string,
+ *      tokensValidAfterTime: Date,
+ *      roleId: string,
+ *      _isDeleted: boolean,
+ *    }
+ *    & import('mongoose').MongooseDocument
+ *  } User
  */
 const UserSchema = new Schema({
   uid: {

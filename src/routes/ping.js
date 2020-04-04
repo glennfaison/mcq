@@ -5,7 +5,11 @@ const router = require('express').Router();
  *  @swagger
  *  /ping:
  *    get:
+ *      summary: ping
  *      description: Ping the server to check if it's online
+ *      tags:
+ *        - Ping
+ *      operationId: ping
  *      produces:
  *        - application/json
  *      responses:

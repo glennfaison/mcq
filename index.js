@@ -4,12 +4,16 @@ require('dotenv').config();
 const createServer = require('./src/server');
 const bootstrap = require('./bootstrap');
 
-const server = createServer();
-// Start the server
-server.listen(process.env.PORT, async () => {
+async function run () {
   await bootstrap();
-  console.log(`Listening at http://localhost:${process.env.PORT} in ${process.env.NODE_ENV} mode`);
-});
+  const server = createServer();
+  // Start the server
+  server.listen(process.env.PORT, async () => {
+    console.log(`Listening at http://localhost:${process.env.PORT} in ${process.env.NODE_ENV} mode`);
+  });
+}
+
+run();
 
 if (process.env.NODE_ENV === 'production') {
   // Catch any uncaught exceptions in this application

@@ -21,6 +21,19 @@ const collectionNames = require('../../app.config').COLLECTION_NAMES;
  *          _isDeleted:
  *            type: boolean
  */
+
+/**
+ *  @typedef
+ *  {{
+ *      name: string,
+ *      description: string,
+ *      courseId: string,
+ *      createdBy: string,
+ *      _isDeleted: boolean,
+ *    }
+ *    & import('mongoose').MongooseDocument
+ *  } QuizResult
+ */
 const TopicSchema = new Schema(
   {
     name: {

@@ -1,54 +1,62 @@
-const User = require('../models/User');
+const UserModel = require('../models/User');
 const Firebase = require('./firebase');
 const mixin = require('../../helpers/mixin');
 
-const create = async (user, callback) => {
-  const newUser = await User.create(user);
+/** @type {UserService&import('mongoose').Model} */
+let service = {};
+
+/**
+ *  @typedef {{use: Function}} UserService
+ */
+
+/**
+ *  Pass in an object to be used as a dependency of the UserService.
+ *  Note that this is intended for injecting mock dependencies.
+ *  @param {{firebaseAdmin:any,firebaseClient:any}} { firebaseAdmin, firebaseClient }
+ *  @returns {void}
+ */
+service.use = ({ firebaseAdmin, firebaseClient }) => {
+  if (firebaseAdmin) { Firebase.admin = firebaseAdmin; }
+  if (firebaseClient) { Firebase.client = firebaseClient; }
+};
+
+service.create = async (user) => {
+  const newUser = await UserModel.create(user);
   const id = newUser._id.toString();
   try {
     const firebaseUser = await Firebase.admin.createUser({ ...user, uid: id });
-    await User.findOneAndUpdate({ _id: id }, firebaseUser);
-    return await User.findOne({ _id: id });
+    await UserModel.findOneAndUpdate({ _id: id }, firebaseUser);
+    return await UserModel.findOne({ _id: id });
   } catch (e) {
-    User.findOneAndDelete({ _id: id });
+    UserModel.findOneAndDelete({ _id: id });
     Firebase.admin.deleteUser(id);
     throw e;
   }
 };
 
-const findOneAndUpdate = async (conditions, user) => {
+service.findOneAndUpdate = async (conditions, user) => {
   delete user.id;
   delete user._id;
-  await User.findOneAndUpdate(conditions, user);
-  const res = await User.findOne(conditions);
+  await UserModel.findOneAndUpdate(conditions, user);
+  const res = await UserModel.findOne(conditions);
   Firebase.admin.updateUser(res._id.toString(), res);
   return res;
 };
 
-const findOneAndDelete = async (conditions) => {
+service.findOneAndDelete = async (conditions) => {
   try {
-    const first = await User.findOneAndDelete(conditions);
+    const first = await UserModel.findOneAndDelete(conditions);
     await Firebase.admin.deleteUser(first._id.toString()).catch();
   } catch (e) {
     console.log(e);
     throw e;
   }
 };
+service.findByIdAndUpdate = (id, ...others) => service.findOneAndUpdate({ _id: id }, ...others);
+service.findByIdAndDelete = (id, ...others) => service.findOneAndDelete({ _id: id }, ...others);
 
-/**
- *  @type {User}
- */
-const handler = {
-  create: create,
-  findOneAndUpdate: findOneAndUpdate,
-  findOneAndDelete: findOneAndDelete,
-  findByIdAndUpdate: (id, ...others) => findOneAndUpdate({ _id: id }, ...others),
-  findByIdAndDelete: (id, ...others) => findOneAndDelete({ _id: id }, ...others)
-};
-
-/**
- *  @type {User}
- */
-const service = mixin(User, handler);
+service = mixin(UserModel, service);
 
 module.exports = service;
+
+/** @typedef {import('../models/user').User} User */
