@@ -20,7 +20,7 @@ if (process.env.NODE_ENV === 'production') {
   process.on('uncaughtException', (err) => {
     console.log(`There was an uncaught exception: ${err}`);
   });
-  
+
   // Catch any unhandled rejections in this application
   process.on('unhandledRejection', (err) => {
     console.log(`There was an unhandled rejection: ${err}`);
