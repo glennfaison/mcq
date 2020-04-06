@@ -9,15 +9,17 @@ async function bootstrap () {
 
   setUpFirebaseAdmin();
   setUpFirebaseClient();
-  const Firebase = require('../../src/services/firebase');
+
+  const firebaseAdmin = require('../../src/services/firebase-admin');
+  const firebaseClient = require('../../src/services/firebase-client');
 
   // Set up mock firebase apps
   const mockFirebaseAdmin = setUpMockFirebaseAdmin();
   const mockFirebaseClient = setUpMockFirebaseClient();
   try {
     // Inject mock dependencies into Firebase service
-    Firebase.admin.use({ firebase: mockFirebaseAdmin.auth() });
-    Firebase.client.use({ firebase: mockFirebaseClient.auth() });
+    firebaseAdmin.use({ firebase: mockFirebaseAdmin.auth() });
+    firebaseClient.use({ firebase: mockFirebaseClient.auth() });
   } catch (e) {
     /* Catch the "auth/invalid-api-key" error and do nothing about it. */
   }

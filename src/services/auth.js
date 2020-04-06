@@ -1,5 +1,5 @@
 let UserService = require('./user');
-const Firebase = require('./firebase');
+const firebaseClient = require('./firebase-client');
 
 class AuthService {
   constructor () {
@@ -31,7 +31,7 @@ class AuthService {
    *  @returns {Promise<string>}
    */
   async login ({ email, password }) {
-    const cred = await Firebase.client.signInWithEmailAndPassword(email, password);
+    const cred = await firebaseClient.signInWithEmailAndPassword(email, password);
     const idToken = await cred.user.getIdToken();
     return idToken;
   }

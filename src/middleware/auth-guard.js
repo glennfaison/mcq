@@ -1,5 +1,5 @@
 const HttpStatus = require('http-status-codes');
-const Firebase = require('../services/firebase');
+const firebaseAdmin = require('../services/firebase-admin');
 const UserService = require('../services/user');
 
 /**
@@ -8,7 +8,7 @@ const UserService = require('../services/user');
 async function authGuard (req, res, next) {
   const authorization = req.headers.authorization || '';
   try {
-    const auth = await Firebase.admin.verifyIdToken(authorization, true);
+    const auth = await firebaseAdmin.verifyIdToken(authorization, true);
     if (!auth) {
       return res.sendStatus(HttpStatus.UNAUTHORIZED);
     }

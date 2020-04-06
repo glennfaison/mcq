@@ -1,37 +1,22 @@
 const UserModel = require('../models/User');
-const Firebase = require('./firebase');
+const firebaseAdmin = require('./firebase-admin');
 const mixin = require('../../helpers/mixin');
 
 /** @type {UserService&import('mongoose').Model} */
 let service = {};
 
-/**
- *  @typedef {{use: Function}} UserService
- */
-
-/**
- *  Pass in an object to be used as a dependency of the UserService.
- *  Note that this is intended for injecting mock dependencies.
- *  @param {{firebaseAdmin:any,firebaseClient:any}} { firebaseAdmin, firebaseClient }
- *  @returns {void}
- */
-service.use = ({ firebaseAdmin, firebaseClient }) => {
-  if (firebaseAdmin) { Firebase.admin = firebaseAdmin; }
-  if (firebaseClient) { Firebase.client = firebaseClient; }
-};
-
 service.create = async (user) => {
   const newUser = await UserModel.create(user);
   const id = newUser._id.toString();
   try {
-    let firebaseUser = await Firebase.admin.createUser({ ...user, uid: id });
+    let firebaseUser = await firebaseAdmin.createUser({ ...user, uid: id });
 
     // #region Sometimes, `createUser` returns `undefined`
     if (!firebaseUser && newUser.email) {
-      firebaseUser = await Firebase.admin.getUserByEmail(user.email);
+      firebaseUser = await firebaseAdmin.getUserByEmail(user.email);
     }
     if (!firebaseUser && newUser.phoneNumber) {
-      firebaseUser = await Firebase.admin.getUserByPhoneNumber(user.phoneNumber);
+      firebaseUser = await firebaseAdmin.getUserByPhoneNumber(user.phoneNumber);
     }
     // #endregion Sometimes, `createUser` returns `undefined`
 
@@ -39,7 +24,7 @@ service.create = async (user) => {
     return await UserModel.findOne({ _id: id });
   } catch (e) {
     UserModel.findOneAndDelete({ _id: id });
-    Firebase.admin.deleteUser(id);
+    firebaseAdmin.deleteUser(id);
     throw e;
   }
 };
@@ -49,14 +34,14 @@ service.findOneAndUpdate = async (conditions, user) => {
   delete user._id;
   await UserModel.findOneAndUpdate(conditions, user);
   const res = await UserModel.findOne(conditions);
-  Firebase.admin.updateUser(res._id.toString(), res);
+  firebaseAdmin.updateUser(res._id.toString(), res);
   return res;
 };
 
 service.findOneAndDelete = async (conditions) => {
   try {
     const first = await UserModel.findOneAndDelete(conditions);
-    await Firebase.admin.deleteUser(first._id.toString()).catch();
+    await firebaseAdmin.deleteUser(first._id.toString()).catch();
   } catch (e) {
     console.log(e);
     throw e;
