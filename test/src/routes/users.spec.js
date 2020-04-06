@@ -63,11 +63,20 @@ describe('Users Endpoint Test', () => {
     }
   });
 
+  describe('GET api/v1/users', () => {
+    it('should fetch all users and have a status of 200', async () => {
+      const res = await chai.request(app).get('/api/v1/users')
+        .set('Authorization', users.admin.idToken);
+      expect(res.error).to.be.false;
+      expect(res.body.data).to.have.length.greaterThan(0);
+      expect(res).to.have.status(HttpStatus.OK);
+    });
+  });
+
   describe('GET api/v1/users/me', () => {
     it('should fetch the requester\'s user details', async () => {
       const res = await chai.request(app).get('/api/v1/users/me')
         .set('Authorization', users.defaultUser.idToken);
-      console.log('DATA ===', res.body);
       expect(res.error).to.be.false;
       expect(res.body.data).to.not.be.empty;
       expect(res).to.have.status(HttpStatus.OK);

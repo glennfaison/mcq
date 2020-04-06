@@ -12,7 +12,7 @@ async function authGuard (req, res, next) {
     if (!auth) {
       return res.sendStatus(HttpStatus.UNAUTHORIZED);
     }
-    req.auth = await UserService.findById(auth.uid);
+    req.auth = await UserService.findOne({ uid: auth.uid });
     return next();
   } catch (e) {
     return res.sendStatus(HttpStatus.UNAUTHORIZED);

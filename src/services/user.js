@@ -24,7 +24,17 @@ service.create = async (user) => {
   const newUser = await UserModel.create(user);
   const id = newUser._id.toString();
   try {
-    const firebaseUser = await Firebase.admin.createUser({ ...user, uid: id });
+    let firebaseUser = await Firebase.admin.createUser({ ...user, uid: id });
+
+    // #region Sometimes, `createUser` returns `undefined`
+    if (!firebaseUser && newUser.email) {
+      firebaseUser = await Firebase.admin.getUserByEmail(user.email);
+    }
+    if (!firebaseUser && newUser.phoneNumber) {
+      firebaseUser = await Firebase.admin.getUserByPhoneNumber(user.phoneNumber);
+    }
+    // #endregion Sometimes, `createUser` returns `undefined`
+
     await UserModel.findOneAndUpdate({ _id: id }, firebaseUser);
     return await UserModel.findOne({ _id: id });
   } catch (e) {
