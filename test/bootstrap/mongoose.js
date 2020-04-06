@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
+const { MongoMemoryServer } = require('mongodb-memory-server');
 
+const mongod = new MongoMemoryServer();
 let mongooseConnection;
 
 /**
@@ -16,6 +18,7 @@ async function run () {
       useCreateIndex: true
     };
 
+    process.env.MONGO_URI = await mongod.getConnectionString();
     mongooseConnection = await mongoose.connect(process.env.MONGO_URI, mongooseOptions);
 
     if (process.env.NODE_ENV === 'development') {

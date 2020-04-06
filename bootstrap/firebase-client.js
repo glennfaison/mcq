@@ -1,10 +1,14 @@
 const firebase = require('firebase');
 
 /**
- *  Get a firebase admin service
- *  @returns {import('firebase-admin').app.App}
+ *  Initialize the firebase client service
+ *  @returns {import('firebase').app.App}
  */
 function run () {
+  if (firebase.apps.length) {
+    return;
+  }
+
   const projectId = process.env.FIREBASE_PROJECT_ID;
   if (!projectId && process.env.NODE_ENV !== 'testing') {
     console.log('FIREBASE_PROJECT_ID environment variable has not been set');

@@ -37,7 +37,6 @@ const PrivilegeSchema = new Schema(
   {
     name: {
       type: String,
-      lowercase: true,
       trim: true,
       index: true,
       unique: true,

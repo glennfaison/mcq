@@ -4,7 +4,7 @@
   "description": "API to a MCQ web service",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=testing mocha --recursive --exit"
+    "test": "NODE_ENV=testing mocha --timeout=20000 --recursive --exit"
   },
   "repository": {
     "type": "git",
@@ -37,6 +37,7 @@
     "swagger-ui-express": "^4.1.4"
   },
   "devDependencies": {
+    "@firebase/testing": "^0.18.2",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
     "eslint": "^6.8.0",

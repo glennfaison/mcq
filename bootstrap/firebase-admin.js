@@ -1,10 +1,14 @@
 const firebaseAdmin = require('firebase-admin');
 
 /**
- *  Get a firebase admin service
+ *  Initialize the firebase admin service
  *  @returns {import('firebase-admin').app.App}
  */
 function run () {
+  if (firebaseAdmin.apps.length) {
+    return;
+  }
+
   const pathToServiceFile = process.env.FIREBASE_SERVICE_FILE;
   const serviceAccount = require(pathToServiceFile);
 

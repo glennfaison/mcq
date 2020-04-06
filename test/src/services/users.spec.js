@@ -2,17 +2,14 @@ const { describe, it, before, after } = require('mocha');
 const chai = require('chai');
 const { expect } = chai;
 const chaiHttp = require('chai-http');
-const mongooseMock = require('../../../bootstrap/mongoose-mock');
+chai.use(chaiHttp);
 
 require('dotenv').config();
-
-const firebaseAdmin = require('../../../bootstrap/firebase-admin');
-const firebaseClient = require('../../../bootstrap/firebase-client');
+const bootstrap = require('../../bootstrap');
 
 /** @type {import('../../../src/services/user')} */
 let UserService;
-
-chai.use(chaiHttp);
+let mongoHelper;
 
 /** @type {import('mongoose').Document & {email:string,password:string,displayName:string}} */
 let testUser = {
@@ -25,20 +22,17 @@ describe('User service', function () {
   this.timeout(20000);
 
   before(async () => {
-    await Promise.all([firebaseClient(), firebaseAdmin(), mongooseMock()]);
-    await mongooseMock.clearMongoDbDatabase();
-    const firebase = require('../../../src/services/firebase');
-    try {
-      const firebaseUser = await firebase.admin.getUserByEmail(testUser.email).catch();
-      if (firebaseUser) { await firebase.admin.deleteUser(firebaseUser.uid).catch(); }
-    } catch (e) {}
+    await bootstrap();
+    mongoHelper = require('../../../helpers/mongoose');
+    await mongoHelper.clearDb();
     UserService = require('../../../src/services/user');
   });
 
   after(async () => {
-    await UserService.findOneAndRemove({ _id: testUser._id });
-    await mongooseMock.clearMongoDbDatabase();
-    await mongooseMock.closeMongoDbDatabase();
+    await mongoHelper.clearDb();
+    await mongoHelper.closeConnection();
+    // const firebase = require('@firebase/testing');
+    // Promise.all(firebase.apps().map(app => app.delete()));
   });
 
   it('should find all users', async () => {
