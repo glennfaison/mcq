@@ -1,14 +1,9 @@
 const setUpMongoose = require('./mongoose');
-const setUpFirebaseAdmin = require('../../bootstrap/firebase-admin');
-const setUpFirebaseClient = require('../../bootstrap/firebase-client');
 const setUpMockFirebaseAdmin = require('./firebase-admin');
 const setUpMockFirebaseClient = require('./firebase-client');
 
 async function bootstrap () {
   await setUpMongoose();
-
-  setUpFirebaseAdmin();
-  setUpFirebaseClient();
 
   const firebaseAdmin = require('../../src/services/firebase-admin');
   const firebaseClient = require('../../src/services/firebase-client');

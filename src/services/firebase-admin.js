@@ -1,5 +1,7 @@
-let _firebaseAdmin = require('firebase-admin');
 const mixin = require('../../helpers/mixin');
+const setUp = require('../../bootstrap/firebase-admin');
+
+let _firebaseAdmin = setUp();
 
 /**
  *  @type {{

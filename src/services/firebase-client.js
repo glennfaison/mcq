@@ -1,5 +1,7 @@
-let _firebaseClient = require('firebase');
 const mixin = require('../../helpers/mixin');
+const setUp = require('../../bootstrap/firebase-client');
+
+let _firebaseClient = setUp();
 
 /**
  *  @type {{
