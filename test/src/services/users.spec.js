@@ -18,9 +18,7 @@ let testUser = {
   displayName: 'test.test'
 };
 
-describe('User service', function () {
-  this.timeout(20000);
-
+describe('User service', () => {
   before(async () => {
     await bootstrap();
     mongoHelper = require('../../../helpers/mongoose');
@@ -31,8 +29,6 @@ describe('User service', function () {
   after(async () => {
     await mongoHelper.clearDb();
     await mongoHelper.closeConnection();
-    // const firebase = require('@firebase/testing');
-    // Promise.all(firebase.apps().map(app => app.delete()));
   });
 
   it('should find all users', async () => {

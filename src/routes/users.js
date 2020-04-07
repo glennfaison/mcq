@@ -54,7 +54,7 @@ router.get('/users/me', authGuard, async (req, res, next) => {
  */
 router.get('/users', authGuard, async (req, res, next) => {
   try {
-    const data = await UserService.find({});
+    const data = await UserService.find(req.query);
     return res.status(HttpStatus.OK).json({ data });
   } catch (e) {
     return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(e);
