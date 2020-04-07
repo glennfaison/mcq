@@ -18,8 +18,7 @@ class _UserService {
       }
       // #endregion Sometimes, `createUser` returns `undefined`
 
-      await UserModel.findOneAndUpdate({ _id: id }, firebaseUser);
-      return await UserModel.findOne({ _id: id });
+      return await UserModel.findOneAndUpdate({ _id: id }, firebaseUser, { new: true });
     } catch (e) {
       UserModel.findOneAndDelete({ _id: id });
       firebaseAdmin.deleteUser(id);
