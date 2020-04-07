@@ -1,9 +1,11 @@
 const Role = require('../models/role');
 const mixin = require('../../helpers/mixin');
 
-/** @type {import('mongoose').Model} */
-let service = {};
+class _RoleService {}
 
-service = mixin(Role, service);
+/** @typedef {_RoleService & import('mongoose').Model} RoleService */
+
+/** @type {RoleService} */
+const service = mixin(Role, new _RoleService());
 
 module.exports = service;

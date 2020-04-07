@@ -1,9 +1,11 @@
-const Course = require('../models/Course');
+const Course = require('../models/course');
 const mixin = require('../../helpers/mixin');
 
-/** @type {import('mongoose').Model} */
-let service = {};
+class _CourseService {}
 
-service = mixin(Course, service);
+/** @typedef {_CourseService & import('mongoose').Model} CourseService */
+
+/** @type {CourseService} */
+const service = mixin(Course, new _CourseService());
 
 module.exports = service;

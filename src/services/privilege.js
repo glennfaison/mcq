@@ -1,9 +1,11 @@
 const Privilege = require('../models/privilege');
 const mixin = require('../../helpers/mixin');
 
-/** @type {import('mongoose').Model} */
-let service = {};
+class _PrivilegeService {}
 
-service = mixin(Privilege, service);
+/** @typedef {_PrivilegeService & import('mongoose').Model} PrivilegeService */
+
+/** @type {PrivilegeService} */
+const service = mixin(Privilege, new _PrivilegeService());
 
 module.exports = service;

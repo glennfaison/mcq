@@ -1,9 +1,11 @@
 const Quiz = require('../models/quiz');
 const mixin = require('../../helpers/mixin');
 
-/** @type {import('mongoose').Model} */
-let service = {};
+class _QuizService {}
 
-service = mixin(Quiz, service);
+/** @typedef {_QuizService & import('mongoose').Model} QuizService */
+
+/** @type {QuizService} */
+const service = mixin(Quiz, new _QuizService());
 
 module.exports = service;

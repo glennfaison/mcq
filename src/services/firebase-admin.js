@@ -3,70 +3,68 @@ const setUp = require('../../bootstrap/firebase-admin');
 
 let _firebaseAdmin = setUp();
 
-/**
- *  @type {{
- *    use: ({firebase}) => void
- *  } & import('firebase-admin').auth.Auth}
- */
-let admin = {};
-
-/**
- *  Inject dependencies into this service
- *  @param {{firebase:any}} { firebase }
- */
-admin.use = ({ firebase }) => {
-  if (firebase) { _firebaseAdmin = firebase; }
-};
-
-admin.getUser = async (uid) => {
-  if (!uid) { return null; }
-  uid = uid && uid.toString();
-  let user = null;
-  user = await _firebaseAdmin.auth().getUser(uid).catch(e => {});
-  return user;
-};
-
-admin.getUserByEmail = async (email) => {
-  if (!email) { return null; }
-  email = email && email.toString();
-  let user = null;
-  user = await _firebaseAdmin.auth().getUserByEmail(email).catch(e => {});
-  return user;
-};
-
-admin.getUserByPhoneNumber = async (phoneNumber) => {
-  if (!phoneNumber) { return null; }
-  phoneNumber = phoneNumber && phoneNumber.toString();
-  let user = null;
-  user = await _firebaseAdmin.auth().getUserByPhoneNumber(phoneNumber).catch(e => {});
-  return user;
-};
-
-admin.updateUser = async (uid, properties) => {
-  delete properties._id;
-  delete properties.id;
-
-  if (!uid) { return null; }
-  uid = uid && uid.toString();
-  const user = await _firebaseAdmin.auth().updateUser(uid, properties).catch(e => {});
-  return user || null;
-};
-
-admin.deleteUser = async (uid) => {
-  if (!uid) { return; }
-  uid = uid && uid.toString();
-  await _firebaseAdmin.auth().deleteUser(uid).catch(e => {});
-};
-
-admin.createUser = async (properties) => {
-  if (!properties.uid && (properties._id || properties.id)) {
-    properties.uid = properties.id.toString() || properties._id.toString();
+class _FirebaseAdminService {
+  /**
+   *  Inject dependencies into this service
+   *  @param {{firebase:any}} { firebase }
+   */
+  use ({ firebase }) {
+    if (firebase) { _firebaseAdmin = firebase; }
   }
-  let user = null;
-  user = await _firebaseAdmin.auth().createUser(properties).catch(e => {});
-  return user;
-};
 
-admin = mixin(_firebaseAdmin.auth(), admin);
+  async getUser (uid) {
+    if (!uid) { return null; }
+    uid = uid && uid.toString();
+    let user = null;
+    user = await _firebaseAdmin.auth().getUser(uid).catch(e => {});
+    return user;
+  }
+
+  async getUserByEmail (email) {
+    if (!email) { return null; }
+    email = email && email.toString();
+    let user = null;
+    user = await _firebaseAdmin.auth().getUserByEmail(email).catch(e => {});
+    return user;
+  }
+
+  async getUserByPhoneNumber (phoneNumber) {
+    if (!phoneNumber) { return null; }
+    phoneNumber = phoneNumber && phoneNumber.toString();
+    let user = null;
+    user = await _firebaseAdmin.auth().getUserByPhoneNumber(phoneNumber).catch(e => {});
+    return user;
+  }
+
+  async updateUser (uid, properties) {
+    delete properties._id;
+    delete properties.id;
+
+    if (!uid) { return null; }
+    uid = uid && uid.toString();
+    const user = await _firebaseAdmin.auth().updateUser(uid, properties).catch(e => {});
+    return user || null;
+  }
+
+  async deleteUser (uid) {
+    if (!uid) { return; }
+    uid = uid && uid.toString();
+    await _firebaseAdmin.auth().deleteUser(uid).catch(e => {});
+  }
+
+  async createUser (properties) {
+    if (!properties.uid && (properties._id || properties.id)) {
+      properties.uid = properties.id.toString() || properties._id.toString();
+    }
+    let user = null;
+    user = await _firebaseAdmin.auth().createUser(properties).catch(e => {});
+    return user;
+  }
+}
+
+/** @typedef {_FirebaseAdminService & import('firebase-admin').auth.Auth} FirebaseAdminService */
+
+/** @type {FirebaseAdminService} */
+const admin = mixin(_firebaseAdmin.auth(), new _FirebaseAdminService());
 
 module.exports = admin;

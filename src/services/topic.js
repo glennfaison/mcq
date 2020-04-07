@@ -1,9 +1,11 @@
 const Topic = require('../models/topic');
 const mixin = require('../../helpers/mixin');
 
-/** @type {import('mongoose').Model} */
-let service = {};
+class _TopicService {}
 
-service = mixin(Topic, service);
+/** @typedef {_TopicService & import('mongoose').Model} TopicService */
+
+/** @type {TopicService} */
+const service = mixin(Topic, new _TopicService());
 
 module.exports = service;
