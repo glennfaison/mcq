@@ -21,9 +21,9 @@ function run () {
     databaseURL: `https://${projectId}.firebaseio.com`,
     projectId: projectId,
     storageBucket: `${projectId}.appspot.com`,
-    messagingSenderId: '204055794902',
-    appId: '1:204055794902:web:147b9051ba92976d8fe577',
-    measurementId: 'G-0659ED3ZFH'
+    messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.FIREBASE_APP_ID,
+    measurementId: process.env.FIREBASE_MEASUREMENT_ID
   });
 
   return app;
