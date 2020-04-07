@@ -16,7 +16,7 @@ function run () {
   }
 
   const app = firebase.initializeApp({
-    apiKey: 'AIzaSyCtFpwJC91H7A_v8zX0Mo5PBw1-vpQBvZw',
+    apiKey: process.env.FIREBASE_API_KEY,
     authDomain: `${projectId}.firebaseapp.com`,
     databaseURL: `https://${projectId}.firebaseio.com`,
     projectId: projectId,
