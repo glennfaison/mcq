@@ -26,8 +26,6 @@ describe('ping test', () => {
   after(async () => {
     await mongoHelper.clearDb();
     await mongoHelper.closeConnection();
-    // const firebase = require('@firebase/testing');
-    // Promise.all(firebase.apps().map(app => app.delete()));
   });
 
   describe('POST /ping', () => {

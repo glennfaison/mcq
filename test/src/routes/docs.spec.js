@@ -26,11 +26,9 @@ describe('Documentation Endpoint Test', () => {
   after(async () => {
     await mongoHelper.clearDb();
     await mongoHelper.closeConnection();
-    // const firebase = require('@firebase/testing');
-    // Promise.all(firebase.apps().map(app => app.delete()));
   });
 
-  describe('POST api/v1/openapi.json', () => {
+  describe('POST /api/v1/openapi.json', () => {
     it('should fail with a status 404, an empty body, and an error', async () => {
       const res = await chai.request(app).post('/api/v1/openapi.json');
       expect(res.error).to.be.an('error');
@@ -39,14 +37,14 @@ describe('Documentation Endpoint Test', () => {
     });
   });
 
-  describe('GET api/v1/openapi.json', () => {
+  describe('GET /api/v1/openapi.json', () => {
     it('should return a status code of 200', async () => {
       const res = await chai.request(app).get('/api/v1/openapi.json');
       expect(res).to.have.status(HttpStatus.OK);
     });
   });
 
-  describe('GET api/v1/docs', () => {
+  describe('GET /api/v1/docs', () => {
     it('should return a status code of 200', async () => {
       const res = await chai.request(app).get('/api/v1/docs');
       expect(res).to.have.status(HttpStatus.OK);

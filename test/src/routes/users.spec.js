@@ -41,8 +41,6 @@ describe('Users Endpoint Test', () => {
   after(async () => {
     await mongoHelper.clearDb();
     await mongoHelper.closeConnection();
-    // const firebase = require('@firebase/testing');
-    // Promise.all(firebase.apps().map(app => app.delete()));
   });
 
   beforeEach(async () => {
@@ -63,7 +61,7 @@ describe('Users Endpoint Test', () => {
     }
   });
 
-  describe('GET api/v1/users', () => {
+  describe('GET /api/v1/users', () => {
     it('should fetch all users and have a status of 200', async () => {
       const res = await chai.request(app).get('/api/v1/users')
         .set('Authorization', users.admin.idToken);
@@ -73,7 +71,7 @@ describe('Users Endpoint Test', () => {
     });
   });
 
-  describe('GET api/v1/users/me', () => {
+  describe('GET /api/v1/users/me', () => {
     it('should fetch the requester\'s user details', async () => {
       const res = await chai.request(app).get('/api/v1/users/me')
         .set('Authorization', users.defaultUser.idToken);
@@ -83,21 +81,32 @@ describe('Users Endpoint Test', () => {
     });
   });
 
-  /* describe('PUT api/v1/users/me', () => {
+  describe('PUT /api/v1/users/:id', () => {
+    it('should update user information', async () => {
+      const user = { displayName: 'johndoe' };
+      const res = await chai.request(app).put(`/api/v1/users/${users.defaultUser.user.id}`)
+        .set('Authorization', users.admin.idToken).send({ user });
+      expect(res.body.data.displayName).to.equal(user.displayName);
+      // that the others have not changed
+      expect(res.body.data.phoneNumber).eq(users.defaultUser.user.phoneNumber);
+    });
+  });
+
+  /* describe('PUT /api/v1/users/me', () => {
     it('should return a status code of 200', async () => {
       const res = await chai.request(app).get('/api/v1/users/me');
       expect(res).to.have.status(HttpStatus.OK);
     });
   });
 
-  describe('DELETE api/v1/users/me', () => {
+  describe('DELETE /api/v1/users/me', () => {
     it('should return a status code of 200', async () => {
       const res = await chai.request(app).get('api/v1/users/me');
       expect(res).to.have.status(HttpStatus.OK);
     });
   });
 
-  describe('GET api/v1/users', () => {
+  describe('GET /api/v1/users', () => {
     it('should fail with a status 404, an empty body, and an error', async () => {
       const res = await chai.request(app).post('/api/v1/users');
       expect(res.error).to.be.an('error');
@@ -106,7 +115,7 @@ describe('Users Endpoint Test', () => {
     });
   });
 
-  describe('GET api/v1/users/:id', () => {
+  describe('GET /api/v1/users/:id', () => {
     it('should fail with a status 404, an empty body, and an error', async () => {
       const res = await chai.request(app).post('/api/v1/openapi.json');
       expect(res.error).to.be.an('error');
@@ -115,16 +124,7 @@ describe('Users Endpoint Test', () => {
     });
   });
 
-  describe('PUT api/v1/users/:id', () => {
-    it('should fail with a status 404, an empty body, and an error', async () => {
-      const res = await chai.request(app).post('/api/v1/openapi.json');
-      expect(res.error).to.be.an('error');
-      expect(res.body).to.be.empty;
-      expect(res).to.have.status(HttpStatus.NOT_FOUND);
-    });
-  });
-
-  describe('DELETE api/v1/users/:id', () => {
+  describe('DELETE /api/v1/users/:id', () => {
     it('should fail with a status 404, an empty body, and an error', async () => {
       const res = await chai.request(app).post('/api/v1/openapi.json');
       expect(res.error).to.be.an('error');

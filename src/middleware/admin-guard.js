@@ -1,5 +1,6 @@
 const HttpStatus = require('http-status-codes');
 const RoleService = require('../services/role');
+const Roles = require('../enums/roles');
 
 /**
  *  Middleware to allow access to a route only if the requester is an ADMIN
@@ -9,8 +10,8 @@ async function adminGuard (req, res, next) {
     if (!req.auth) {
       return res.sendStatus(HttpStatus.UNAUTHORIZED);
     }
-    const role = await RoleService.findById(req.auth.id);
-    if (!role || role.name !== 'ADMIN') {
+    const role = await RoleService.findById(req.auth.roleId);
+    if (!role || role.name !== Roles.ADMINISTRATOR) {
       return res.sendStatus(HttpStatus.UNAUTHORIZED);
     }
     return next();
