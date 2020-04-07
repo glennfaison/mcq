@@ -48,7 +48,6 @@ describe('Users Endpoint Test', () => {
     const userHelper = require('../../../helpers/user');
 
     await mongoHelper.clearDb();
-
     await seeders.role();
 
     try {
