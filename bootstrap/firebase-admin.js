@@ -7,7 +7,7 @@ require('dotenv').config();
  */
 function run () {
   if (firebaseAdmin.apps.length) {
-    return;
+    return firebaseAdmin.apps[0];
   }
 
   const pathToServiceFile = process.env.FIREBASE_SERVICE_FILE;
