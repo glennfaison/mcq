@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { MongoMemoryServer } = require('mongodb-memory-server');
 
 const clearDb = async () => {
   for (const key in mongoose.connection.collections) {
@@ -11,7 +12,6 @@ const closeConnection = async () => {
   await mongoose.connection.dropDatabase();
   await mongoose.connection.close();
 
-  const { MongoMemoryServer } = require('mongodb-memory-server');
   const mongod = new MongoMemoryServer();
   await mongod.stop();
 };
