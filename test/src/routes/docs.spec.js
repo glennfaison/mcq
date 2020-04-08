@@ -1,4 +1,4 @@
-const { describe, it, before, after } = require('mocha');
+const { describe, it } = require('mocha');
 const chai = require('chai');
 const { expect } = chai;
 const chaiHttp = require('chai-http');
@@ -8,18 +8,8 @@ chai.use(chaiHttp);
 const createApplication = require('../../../src/app');
 /** @type {import('express').Express|import('http').Server} */
 const app = createApplication();
-const mongoHelper = require('../../helpers/mongoose');
 
 describe('Documentation Endpoint Test', () => {
-  before(async () => {
-    await mongoHelper.clearDb();
-  });
-
-  after(async () => {
-    await mongoHelper.clearDb();
-    await mongoHelper.closeConnection();
-  });
-
   describe('POST /api/v1/openapi.json', () => {
     it('should fail with a status 404, an empty body, and an error', async () => {
       const res = await chai.request(app).post('/api/v1/openapi.json');
