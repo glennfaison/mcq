@@ -5,7 +5,7 @@ let app;
 
 /**
  *  Get a firebase admin service
- *  @returns {import('firebase-admin').app.App}
+ *  @returns {import('@firebase/testing').app.App}
  */
 function run () {
   if (app) { return app; }

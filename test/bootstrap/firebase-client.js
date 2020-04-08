@@ -5,7 +5,7 @@ let app;
 
 /**
  *  Get a firebase client service
- *  @returns {import('firebase').app.App}
+ *  @returns {import('@firebase/testing').app.App}
  */
 function run () {
   if (app) { return app; }
