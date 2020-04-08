@@ -5,10 +5,9 @@ const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 
 const bootstrap = require('../../bootstrap');
-
+const mongoHelper = require('../../helpers/mongoose');
 /** @type {import('../../../src/services/user')} */
-let UserService;
-let mongoHelper;
+const UserService = require('../../../src/services/user');
 
 /** @type {import('../../../src/models/user').User} */
 let testUser = {
@@ -20,9 +19,7 @@ let testUser = {
 describe('User service', () => {
   before(async () => {
     await bootstrap();
-    mongoHelper = require('../../helpers/mongoose');
     await mongoHelper.clearDb();
-    UserService = require('../../../src/services/user');
   });
 
   after(async () => {

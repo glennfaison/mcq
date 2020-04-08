@@ -10,6 +10,7 @@ const createApplication = require('../../../src/app');
 const app = createApplication();
 const seeders = require('../../../src/seeders');
 const userHelper = require('../../helpers/user');
+const bootstrap = require('../../bootstrap');
 
 let users = {
   admin: { user: null, idToken: null },
@@ -29,6 +30,7 @@ const testUser = {
 describe('Users Endpoint Test', () => {
   before(async () => {
     await mongoHelper.clearDb();
+    await bootstrap();
   });
 
   after(async () => {
