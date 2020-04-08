@@ -1,32 +1,15 @@
-const { describe, it, before, after } = require('mocha');
+const { describe, it } = require('mocha');
 const chai = require('chai');
 const { expect } = chai;
 const chaiHttp = require('chai-http');
 const HttpStatus = require('http-status-codes');
 chai.use(chaiHttp);
 
-const bootstrap = require('../../bootstrap');
-
+const createApplication = require('../../../src/app');
 /** @type {import('express').Express|import('http').Server} */
-let app;
-let mongoHelper;
+const app = createApplication();
 
 describe('ping test', () => {
-  before(async () => {
-    await bootstrap();
-
-    mongoHelper = require('../../helpers/mongoose');
-    await mongoHelper.clearDb();
-
-    const createApplication = require('../../../src/app');
-    app = createApplication();
-  });
-
-  after(async () => {
-    await mongoHelper.clearDb();
-    await mongoHelper.closeConnection();
-  });
-
   describe('POST /ping', () => {
     it('should fail with a status 404, an empty body, and an error', async () => {
       const res = await chai.request(app).post('/ping');
