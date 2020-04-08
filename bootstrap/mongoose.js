@@ -7,8 +7,8 @@ let mongooseConnection;
  *  Connect to MongoDB
  *  @returns {Promise<import('mongoose').Mongoose>}
  */
-async function run () {
-  if (mongooseConnection) { return mongooseConnection; }
+async function run (mongoUri = process.env.MONGO_URI, forceResfresh = false) {
+  if (mongooseConnection && !forceResfresh) { return mongooseConnection; }
 
   try {
     /** @type {import('mongoose').ConnectionOptions} */
@@ -19,7 +19,7 @@ async function run () {
       useCreateIndex: true
     };
 
-    mongooseConnection = await mongoose.connect(process.env.MONGO_URI, mongooseOptions);
+    mongooseConnection = await mongoose.connect(mongoUri, mongooseOptions);
 
     if (process.env.NODE_ENV === 'development') {
       mongooseConnection.set('debug', true);

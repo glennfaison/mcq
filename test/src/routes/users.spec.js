@@ -29,8 +29,8 @@ const testUser = {
 
 describe('Users Endpoint Test', () => {
   before(async () => {
-    await mongoHelper.clearDb();
     await bootstrap();
+    await mongoHelper.clearDb();
   });
 
   after(async () => {
