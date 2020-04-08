@@ -1,7 +1,5 @@
 const { model, Schema } = require('mongoose');
 const collectionNames = require('../../app.config').COLLECTION_NAMES;
-const setUpMongoose = require('../../bootstrap/mongoose');
-setUpMongoose();
 
 /**
  *  @swagger

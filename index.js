@@ -1,7 +1,9 @@
+const setUpMongoose = require('./bootstrap/mongoose');
 const createServer = require('./src/server');
 require('dotenv').config();
 
 async function init () {
+  await setUpMongoose();
   // run seeder functions
   const seeders = require('./src/seeders');
   await seeders.role();
