@@ -5,11 +5,11 @@ const chaiHttp = require('chai-http');
 const HttpStatus = require('http-status-codes');
 chai.use(chaiHttp);
 
-const bootstrap = require('../../bootstrap');
-
-/** @type {import('express').Express|import('http').Server} */
-let app;
-let mongoHelper;
+const mongoHelper = require('../../helpers/mongoose');
+const createApplication = require('../../../src/app');
+const app = createApplication();
+const seeders = require('../../../src/seeders');
+const userHelper = require('../../helpers/user');
 
 let users = {
   admin: { user: null, idToken: null },
@@ -28,13 +28,7 @@ const testUser = {
 
 describe('Users Endpoint Test', () => {
   before(async () => {
-    await bootstrap();
-
-    mongoHelper = require('../../helpers/mongoose');
     await mongoHelper.clearDb();
-
-    const createApplication = require('../../../src/app');
-    app = createApplication();
   });
 
   after(async () => {
@@ -43,9 +37,6 @@ describe('Users Endpoint Test', () => {
   });
 
   beforeEach(async () => {
-    const seeders = require('../../../src/seeders');
-    const userHelper = require('../../helpers/user');
-
     await mongoHelper.clearDb();
     await seeders.role();
 
