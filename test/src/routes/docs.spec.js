@@ -5,22 +5,14 @@ const chaiHttp = require('chai-http');
 const HttpStatus = require('http-status-codes');
 chai.use(chaiHttp);
 
-require('dotenv').config();
-const bootstrap = require('../../bootstrap');
-
+const createApplication = require('../../../src/app');
 /** @type {import('express').Express|import('http').Server} */
-let app;
-let mongoHelper;
+const app = createApplication();
+const mongoHelper = require('../../helpers/mongoose');
 
 describe('Documentation Endpoint Test', () => {
   before(async () => {
-    await bootstrap();
-
-    mongoHelper = require('../../../helpers/mongoose');
     await mongoHelper.clearDb();
-
-    const createApplication = require('../../../src/app');
-    app = createApplication();
   });
 
   after(async () => {

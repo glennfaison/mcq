@@ -18,8 +18,8 @@ async function run () {
       useCreateIndex: true
     };
 
-    process.env.MONGO_URI = await mongod.getConnectionString();
-    mongooseConnection = await mongoose.connect(process.env.MONGO_URI, mongooseOptions);
+    const mongoUri = await mongod.getConnectionString();
+    mongooseConnection = await mongoose.connect(mongoUri, mongooseOptions);
 
     if (process.env.NODE_ENV === 'development') {
       mongooseConnection.set('debug', true);

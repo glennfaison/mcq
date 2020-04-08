@@ -4,14 +4,13 @@ const { expect } = chai;
 const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 
-require('dotenv').config();
 const bootstrap = require('../../bootstrap');
 
 /** @type {import('../../../src/services/user')} */
 let UserService;
 let mongoHelper;
 
-/** @type {import('mongoose').Document & {email:string,password:string,displayName:string}} */
+/** @type {import('../../../src/models/user').User} */
 let testUser = {
   email: 'test.test@test.com',
   password: 'test.test',
@@ -21,7 +20,7 @@ let testUser = {
 describe('User service', () => {
   before(async () => {
     await bootstrap();
-    mongoHelper = require('../../../helpers/mongoose');
+    mongoHelper = require('../../helpers/mongoose');
     await mongoHelper.clearDb();
     UserService = require('../../../src/services/user');
   });

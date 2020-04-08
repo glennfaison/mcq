@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+require('dotenv').config();
 
 let mongooseConnection;
 
@@ -7,6 +8,8 @@ let mongooseConnection;
  *  @returns {Promise<import('mongoose').Mongoose>}
  */
 async function run () {
+  if (mongooseConnection) { return mongooseConnection; }
+
   try {
     /** @type {import('mongoose').ConnectionOptions} */
     const mongooseOptions = {

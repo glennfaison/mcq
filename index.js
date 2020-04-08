@@ -1,12 +1,7 @@
-// Load data from a .env file into process.env if available
+const createServer = require('./src/server');
 require('dotenv').config();
 
-const createServer = require('./src/server');
-const bootstrap = require('./bootstrap');
-
 async function init () {
-  await bootstrap();
-
   // run seeder functions
   const seeders = require('./src/seeders');
   await seeders.role();

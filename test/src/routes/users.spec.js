@@ -5,7 +5,6 @@ const chaiHttp = require('chai-http');
 const HttpStatus = require('http-status-codes');
 chai.use(chaiHttp);
 
-require('dotenv').config();
 const bootstrap = require('../../bootstrap');
 
 /** @type {import('express').Express|import('http').Server} */
@@ -31,7 +30,7 @@ describe('Users Endpoint Test', () => {
   before(async () => {
     await bootstrap();
 
-    mongoHelper = require('../../../helpers/mongoose');
+    mongoHelper = require('../../helpers/mongoose');
     await mongoHelper.clearDb();
 
     const createApplication = require('../../../src/app');
@@ -45,7 +44,7 @@ describe('Users Endpoint Test', () => {
 
   beforeEach(async () => {
     const seeders = require('../../../src/seeders');
-    const userHelper = require('../../../helpers/user');
+    const userHelper = require('../../helpers/user');
 
     await mongoHelper.clearDb();
     await seeders.role();
