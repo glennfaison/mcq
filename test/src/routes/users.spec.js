@@ -9,6 +9,7 @@ const mongoHelper = require('../../helpers/mongoose');
 const createApplication = require('../../../src/app');
 const app = createApplication();
 const seeders = require('../../../src/seeders');
+const FirebaseDb = require('../../bootstrap/firebase-db');
 const userHelper = require('../../helpers/user');
 const bootstrap = require('../../bootstrap');
 
@@ -40,6 +41,7 @@ describe('Users Endpoint Test', () => {
 
   beforeEach(async () => {
     await mongoHelper.clearDb();
+    FirebaseDb.clearDb();
     await seeders.role();
 
     try {
