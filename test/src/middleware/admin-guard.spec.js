@@ -81,7 +81,7 @@ describe('API test for privilege-based access', () => {
     it('should return a status code of 401 for a non-admin user', async () => {
       try {
         const res = await chai.request(app).get(testUrl);
-        expect(res.error).to.be.an('object');
+        expect(res.error).to.be.an('error');
         expect(res).to.have.status(HttpStatus.UNAUTHORIZED);
       } catch (e) {}
     });
