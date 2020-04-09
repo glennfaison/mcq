@@ -1,5 +1,6 @@
-let UserService = require('./user');
-const firebaseClient = require('./firebase-client');
+const UserService = require('./user');
+let _firebaseAdmin = require('./firebase-admin');
+let _firebaseClient = require('./firebase-client');
 
 class AuthService {
   constructor () {
@@ -7,13 +8,16 @@ class AuthService {
   }
 
   /**
-   *  Pass in an object to be used as a dependency of the UserService.
-   *  Note that this is intended for injecting mock dependencies.
-   *  @param {{userService:any}} { firebaseAdmin }
-   *  @returns {void}
+   *  Inject dependencies into this service
    */
-  use ({ userService }) {
-    if (userService) { UserService = userService; }
+  use ({ firebaseAdmin, firebaseClient }) {
+    if (firebaseAdmin) {
+      _firebaseAdmin = firebaseAdmin;
+      UserService.use({ firebase: firebaseAdmin });
+    }
+    if (firebaseClient) {
+      _firebaseClient = firebaseClient;
+    }
   }
 
   /**
@@ -31,9 +35,16 @@ class AuthService {
    *  @returns {Promise<string>}
    */
   async login ({ email, password }) {
-    const cred = await firebaseClient.signInWithEmailAndPassword(email, password);
+    const cred = await _firebaseClient.signInWithEmailAndPassword(email, password);
     const idToken = await cred.user.getIdToken();
     return idToken;
+  }
+
+  async verifyIdToken (idToken) {
+    let user = await _firebaseAdmin.verifyIdToken(idToken, true);
+    if (!user) { return null; }
+    user = await UserService.findOne({ uid: user.uid });
+    return user;
   }
 }
 

@@ -1,19 +1,78 @@
-const firebaseTesting = require('@firebase/testing');
-require('dotenv').config();
+const FirebaseDb = require('./firebase-db');
 
-let app;
+class _FirebaseAdmin {
+  async createUser (properties) {
+    properties = { ...properties };
+    if (!properties.uid && (properties._id || properties.id)) {
+      properties.uid = properties.id.toString() || properties._id.toString();
+    } else {
+      properties.uid = FirebaseDb.makeId(24);
+    }
+    FirebaseDb.db[properties.uid] = properties;
+    FirebaseDb.db[properties.email] = properties;
+    FirebaseDb.db[properties.phoneNumber] = properties;
+    return properties;
+  }
 
-/**
- *  Get a firebase admin service
- *  @returns {import('@firebase/testing').app.App}
- */
-function run () {
-  if (app) { return app; }
+  async getUser (uid) {
+    if (!uid) { return null; }
+    const user = FirebaseDb.db[uid.toString()];
+    return user;
+  }
 
-  app = firebaseTesting.initializeAdminApp({
-    databaseName: process.env.FIREBASE_PROJECT_ID
-  });
-  return app;
+  getUserByUid (id) {
+    return this.getUser(id);
+  }
+
+  getUserByEmail (email) {
+    return this.getUser(email);
+  }
+
+  getUserByPhoneNumber (phoneNumber) {
+    return this.getUser(phoneNumber);
+  }
+
+  async updateUser (uid, properties) {
+    uid = uid && uid.toString();
+    let user = this.getUser(uid);
+    if (!uid || !user) { return null; }
+
+    user = { ...user, ...properties };
+    delete FirebaseDb.db[uid];
+    FirebaseDb.db[user.uid] = user;
+    FirebaseDb.db[user.email] = user;
+    FirebaseDb.db[user.phoneNumber] = user;
+    return user;
+  }
+
+  updateUserByUid (id) {
+    return this.updateUser(id);
+  }
+
+  async deleteUser (uid) {
+    uid = uid && uid.toString();
+    const user = this.getUser(uid);
+    uid = uid && uid.toString();
+    delete FirebaseDb.db[uid];
+    delete FirebaseDb.db[user.email];
+    delete FirebaseDb.db[user.phoneNumber];
+    return true;
+  }
+
+  deleteUserByUid (id) {
+    return this.deleteUser(id);
+  }
+
+  async verifyIdToken (idToken) {
+    const uid = FirebaseDb.idTokens[idToken];
+    if (!uid) { return null; }
+    return FirebaseDb.db[uid];
+  }
 }
 
-module.exports = run;
+/**
+ *  @type {_FirebaseAdmin & import('firebase-admin').auth.Auth}
+ */
+const admin = new _FirebaseAdmin();
+
+module.exports = admin;

@@ -1,19 +1,17 @@
-const firebaseTesting = require('@firebase/testing');
-require('dotenv').config();
+const firebaseAdmin = require('./firebase-admin');
+const FirebaseDb = require('./firebase-db');
 
-let app;
-
-/**
- *  Get a firebase client service
- *  @returns {import('@firebase/testing').app.App}
- */
-function run () {
-  if (app) { return app; }
-
-  app = firebaseTesting.initializeTestApp({
-    databaseName: process.env.FIREBASE_PROJECT_ID
-  });
-  return app;
+class _FirebaseClient {
+  async signInWithEmailAndPassword (email, password) {
+    const user = await firebaseAdmin.getUserByEmail(email);
+    if (user.password !== password) { return null; }
+    const idToken = FirebaseDb.makeId(24);
+    FirebaseDb.idTokens[idToken] = user.uid;
+    user.getIdToken = async () => idToken;
+    return { user };
+  }
 }
 
-module.exports = run;
+const client = new _FirebaseClient();
+
+module.exports = client;

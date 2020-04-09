@@ -1,8 +1,16 @@
 const UserModel = require('../models/User');
-const firebaseAdmin = require('./firebase-admin');
+let firebaseAdmin = require('./firebase-admin');
 const mixin = require('../../helpers/mixin');
 
 class _UserService {
+  /**
+   *  Inject dependencies into this service
+   *  @param {{firebase:any}} { firebase }
+   */
+  use ({ firebase }) {
+    if (firebase) { firebaseAdmin = firebase; }
+  }
+
   async create (user) {
     const newUser = await UserModel.create(user);
     const id = newUser._id.toString();
