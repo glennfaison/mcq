@@ -20,16 +20,17 @@ describe('User service', () => {
   });
 
   after(async () => {
-    await mongoHelper.clearDb();
     FirebaseDb.clearDb();
+    await mongoHelper.clearDb();
     await mongoHelper.closeConnection();
   });
 
   beforeEach(async () => {
-    await mongoHelper.clearDb();
     FirebaseDb.clearDb();
+    await mongoHelper.clearDb();
+
     await seeders.role();
-    testUser = (await seeders.users.generate(1))[0];
+    testUser = await seeders.users.generateOne();
   });
 
   it('should find all users', async () => {

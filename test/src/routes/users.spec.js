@@ -12,23 +12,24 @@ const seeders = require('../../../src/seeders');
 const FirebaseDb = require('../../bootstrap/firebase-db');
 const userHelper = require('../../helpers/user');
 const bootstrap = require('../../bootstrap');
+const faker = require('faker');
 
 let users = {
   admin: { user: null, idToken: null },
-  defaultUser: { user: null, idToken: null },
-  anotherUser: { user: null, idToken: null }
+  defaultUser1: { user: null, idToken: null },
+  defaultUser2: { user: null, idToken: null }
 };
-const testAdmin = {
+let testAdmin = {
   displayName: 'SysAdmin',
   email: 'sysadmin@mcq.com',
   password: 'Admin123@'
 };
-const testUser = {
+let testUser1 = {
   displayName: 'Default User',
   email: 'defaultuser@mcq.com',
   password: 'defaultuser'
 };
-const testOther = {
+let testUser2 = {
   displayName: 'Another User',
   email: 'anotheruser@mcq.com',
   password: 'anotheruser'
@@ -38,28 +39,25 @@ let tempUser = {};
 describe('Users Endpoint Test', () => {
   before(async () => {
     await bootstrap();
-    await mongoHelper.clearDb();
   });
 
   after(async () => {
+    FirebaseDb.clearDb();
     await mongoHelper.clearDb();
     await mongoHelper.closeConnection();
   });
 
   beforeEach(async () => {
-    await mongoHelper.clearDb();
     FirebaseDb.clearDb();
-    await seeders.role();
+    await mongoHelper.clearDb();
 
-    try {
-      const admin = await userHelper.createAdminAndSignIn(testAdmin);
-      const defaultUser = await userHelper.createUserAndSignIn(testUser);
-      const anotherUser = await userHelper.createUserAndSignIn(testOther);
-      users = { admin, defaultUser, anotherUser };
-    } catch (e) {
-      console.log(e);
-      throw e;
-    }
+    await seeders.role();
+    [testAdmin, testUser1, testUser2] = await seeders.users.generate(3);
+
+    const admin = await userHelper.createAdminAndSignIn(testAdmin);
+    const defaultUser1 = await userHelper.createUserAndSignIn(testUser1);
+    const defaultUser2 = await userHelper.createUserAndSignIn(testUser2);
+    users = { admin, defaultUser1, defaultUser2 };
   });
 
   describe('POST /api/v1/users', () => {
@@ -83,7 +81,7 @@ describe('Users Endpoint Test', () => {
   describe('GET /api/v1/users/me', () => {
     it('should fetch the requester\'s user details', async () => {
       const res = await chai.request(app).get('/api/v1/users/me')
-        .set('Authorization', users.defaultUser.idToken);
+        .set('Authorization', users.defaultUser1.idToken);
       expect(res.error).to.be.false;
       expect(res.body.data).to.be.an('object');
       expect(res.body.data).to.not.be.empty;
@@ -93,14 +91,14 @@ describe('Users Endpoint Test', () => {
 
   describe('PUT /api/v1/users/me', () => {
     it('should modify the requester\'s user details and return a status code of 200', async () => {
-      tempUser = { displayName: 'johndoe' };
+      tempUser = { displayName: faker.internet.userName() };
       const res = await chai.request(app).put('/api/v1/users/me')
-        .set('Authorization', users.anotherUser.idToken).send({ user: tempUser });
+        .set('Authorization', users.defaultUser2.idToken).send({ user: tempUser });
       // some properties should not change
-      expect(res.body.data._id).to.equal(users.anotherUser.user._id.toString());
-      expect(res.body.data.email).to.equal(users.anotherUser.user.email);
-      expect(res.body.data.password).to.equal(users.anotherUser.user.password);
-      expect(res.body.data.phoneNumber).to.equal(users.anotherUser.user.phoneNumber);
+      expect(res.body.data._id).to.equal(users.defaultUser2.user._id.toString());
+      expect(res.body.data.email).to.equal(users.defaultUser2.user.email);
+      expect(res.body.data.password).to.equal(users.defaultUser2.user.password);
+      expect(res.body.data.phoneNumber).to.equal(users.defaultUser2.user.phoneNumber);
       // the remaining properties can change
       expect(res.body.data.displayName).to.equal(tempUser.displayName);
       expect(res).to.have.status(HttpStatus.OK);
@@ -109,14 +107,15 @@ describe('Users Endpoint Test', () => {
 
   describe('GET /api/v1/users/:id', () => {
     it('should fetch user details by id if they exist', async () => {
-      const res = await chai.request(app).get(`/api/v1/users/${users.defaultUser.user.id}`);
+      const res = await chai.request(app).get(`/api/v1/users/${users.defaultUser1.user.id}`);
       expect(res.error).to.be.false;
       expect(res.body.data).to.be.an('object');
       expect(res).to.have.status(HttpStatus.OK);
     });
 
     it('should return 404 if there\'s no user with the given id', async () => {
-      const res = await chai.request(app).get('/api/v1/users/2pz');
+      const fakeId = FirebaseDb.makeId(24);
+      const res = await chai.request(app).get(`/api/v1/users/${fakeId}`);
       expect(res.error).to.be.an('error');
       expect(res).to.have.status(HttpStatus.NOT_FOUND);
     });
@@ -124,31 +123,32 @@ describe('Users Endpoint Test', () => {
 
   describe('PUT /api/v1/users/:id', () => {
     it('should fail with a status 401, if the requester is not an administrator', async () => {
-      tempUser = { displayName: 'johndoe' };
-      const res = await chai.request(app).put(`/api/v1/users/${users.anotherUser.user.id}`)
-        .set('Authorization', users.defaultUser.idToken).send({ user: tempUser });
+      tempUser = { displayName: faker.internet.userName() };
+      const res = await chai.request(app).put(`/api/v1/users/${users.defaultUser2.user.id}`)
+        .set('Authorization', users.defaultUser1.idToken).send({ user: tempUser });
       expect(res.error).to.be.an('error');
       expect(res.body).to.be.empty;
       expect(res).to.have.status(HttpStatus.UNAUTHORIZED);
     });
 
     it('should return 404 if there\'s no user with the given id', async () => {
-      tempUser = { displayName: 'johndoe' };
-      const res = await chai.request(app).put('/api/v1/users/2pz')
+      tempUser = { displayName: faker.internet.userName() };
+      const fakeId = FirebaseDb.makeId(24);
+      const res = await chai.request(app).put(`/api/v1/users/${fakeId}`)
         .set('Authorization', users.admin.idToken).send({ user: tempUser });
       expect(res.error).to.be.an('error');
       expect(res).to.have.status(HttpStatus.NOT_FOUND);
     });
 
     it('should update user information', async () => {
-      tempUser = { displayName: 'johndoe' };
-      const res = await chai.request(app).put(`/api/v1/users/${users.defaultUser.user.id}`)
+      tempUser = { displayName: faker.internet.userName() };
+      const res = await chai.request(app).put(`/api/v1/users/${users.defaultUser1.user.id}`)
         .set('Authorization', users.admin.idToken).send({ user: tempUser });
         // some properties should not change
-      expect(res.body.data._id).to.equal(users.defaultUser.user._id.toString());
-      expect(res.body.data.email).to.equal(users.defaultUser.user.email);
-      expect(res.body.data.password).to.equal(users.defaultUser.user.password);
-      expect(res.body.data.phoneNumber).to.equal(users.defaultUser.user.phoneNumber);
+      expect(res.body.data._id).to.equal(users.defaultUser1.user._id.toString());
+      expect(res.body.data.email).to.equal(users.defaultUser1.user.email);
+      expect(res.body.data.password).to.equal(users.defaultUser1.user.password);
+      expect(res.body.data.phoneNumber).to.equal(users.defaultUser1.user.phoneNumber);
       // the remaining properties can change
       expect(res.body.data.displayName).to.equal(tempUser.displayName);
       expect(res).to.have.status(HttpStatus.OK);
@@ -158,7 +158,7 @@ describe('Users Endpoint Test', () => {
   describe('DELETE /api/v1/users/me', () => {
     it('should return a status code of 204', async () => {
       const res = await chai.request(app).delete('/api/v1/users/me')
-        .set('Authorization', users.anotherUser.idToken);
+        .set('Authorization', users.defaultUser2.idToken);
       expect(res.body).to.be.empty;
       expect(res).to.have.status(HttpStatus.NO_CONTENT);
     });
@@ -166,15 +166,15 @@ describe('Users Endpoint Test', () => {
 
   describe('DELETE /api/v1/users/:id', () => {
     it('should fail with a status 401, if the requester is not an administrator', async () => {
-      const res = await chai.request(app).delete(`/api/v1/users/${users.anotherUser.user.id}`)
-        .set('Authorization', users.defaultUser.idToken);
+      const res = await chai.request(app).delete(`/api/v1/users/${users.defaultUser2.user.id}`)
+        .set('Authorization', users.defaultUser1.idToken);
       expect(res.error).to.be.an('error');
       expect(res.body).to.be.empty;
       expect(res).to.have.status(HttpStatus.UNAUTHORIZED);
     });
 
     it('should return a status of 204, if the requester is an administrator', async () => {
-      const res = await chai.request(app).delete(`/api/v1/users/${users.defaultUser.user.id}`)
+      const res = await chai.request(app).delete(`/api/v1/users/${users.defaultUser1.user.id}`)
         .set('Authorization', users.admin.idToken);
       expect(res.error).to.be.false;
       expect(res.body).to.be.empty;
