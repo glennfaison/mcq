@@ -1,4 +1,4 @@
 module.exports = {
-  admin: require('./admin'),
-  role: require('./role')
+  role: require('./role'),
+  users: require('./users')
 };

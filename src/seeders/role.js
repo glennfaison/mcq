@@ -5,7 +5,7 @@ const Roles = require('../enums/roles');
  *  Seed two role types
  *  @returns {Promise<void>}
  */
-async function run () {
+async function runDefault () {
   const adminRole = {
     name: Roles.ADMINISTRATOR,
     description: 'Administrator of the system',
@@ -27,4 +27,4 @@ async function run () {
   await Promise.all(promises).catch(e => {});
 }
 
-module.exports = run;
+module.exports = runDefault;
