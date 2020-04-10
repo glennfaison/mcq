@@ -1,10 +1,16 @@
+const crypto = require('crypto');
 const firebaseAdmin = require('./firebase-admin');
 const FirebaseDb = require('./firebase-db');
 
 class _FirebaseClient {
   async signInWithEmailAndPassword (email, password) {
     const user = await firebaseAdmin.getUserByEmail(email);
-    if (user.password !== password) { return null; }
+
+    const passwordHash = crypto
+      .createHmac('sha512', user.passwordSalt)
+      .update(password).digest('hex');
+    if (user.passwordHash !== passwordHash) { return null; }
+
     const idToken = FirebaseDb.makeId(24);
     FirebaseDb.idTokens[idToken] = user.uid;
     user.getIdToken = async () => idToken;

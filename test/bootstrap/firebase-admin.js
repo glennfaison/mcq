@@ -1,3 +1,4 @@
+const crypto = require('crypto');
 const FirebaseDb = require('./firebase-db');
 
 class _FirebaseAdmin {
@@ -8,6 +9,14 @@ class _FirebaseAdmin {
     } else {
       properties.uid = FirebaseDb.makeId(24);
     }
+    // Delete `password` field and replace with `passwordHash` and `passwordSalt`
+    const password = properties.password;
+    delete properties.password;
+    properties.passwordSalt = crypto.randomBytes(256).toString('hex').substring(0, 512);
+    properties.passwordHash = crypto
+      .createHmac('sha512', properties.passwordSalt)
+      .update(password).digest('hex');
+
     FirebaseDb.db[properties.uid] = properties;
     FirebaseDb.db[properties.email] = properties;
     FirebaseDb.db[properties.phoneNumber] = properties;

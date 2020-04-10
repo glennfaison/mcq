@@ -10,7 +10,7 @@ const createUserAndSignIn = async (userDetails) => {
   try {
     const user = await AuthService.register(userDetails);
     const idToken = await AuthService.login(userDetails);
-    return { user, idToken };
+    return { user, idToken, password: userDetails.password };
   } catch (e) {
     console.log(e);
   }
@@ -26,7 +26,7 @@ const createAdminAndSignIn = async (userDetails) => {
 
     const user = await AuthService.register(userDetails);
     const idToken = await AuthService.login(userDetails);
-    return { user, idToken };
+    return { user, idToken, password: userDetails.password };
   } catch (e) {
     console.log(e);
   }

@@ -26,6 +26,13 @@ class AuthService {
    *  @returns {Promise<User>}
    */
   register (user) {
+    const { email, password } = user;
+    if (!email) {
+      throw new Error('The \'email\' field is required');
+    }
+    if (!password) {
+      throw new Error('The \'password\' field is required');
+    }
     return UserService.create(user);
   }
 
@@ -35,6 +42,12 @@ class AuthService {
    *  @returns {Promise<string>}
    */
   async login ({ email, password }) {
+    if (!email) {
+      throw new Error('The \'email\' field is required');
+    }
+    if (!password) {
+      throw new Error('The \'password\' field is required');
+    }
     const cred = await _firebaseClient.signInWithEmailAndPassword(email, password);
     const idToken = await cred.user.getIdToken();
     return idToken;
