@@ -13,7 +13,7 @@ class _UserService {
 
   async create (user) {
     const newUser = await UserModel.create(user);
-    const id = newUser._id.toString();
+    const id = newUser.id.toString();
     try {
       let firebaseUser = await firebaseAdmin.createUser({ ...user, uid: id });
 
