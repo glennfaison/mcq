@@ -6,7 +6,6 @@ const HttpStatus = require('http-status-codes');
 chai.use(chaiHttp);
 
 const createApplication = require('../../../src/app');
-/** @type {import('express').Express|import('http').Server} */
 const app = createApplication();
 
 describe('ping test', () => {
