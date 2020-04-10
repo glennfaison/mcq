@@ -8,6 +8,10 @@ let mongooseConnection;
  *  @returns {Promise<import('mongoose').Mongoose>}
  */
 async function run (mongoUri = process.env.MONGO_URI, forceResfresh = false) {
+  if (!mongoUri) {
+    console.log('MONGO_URI environment variable has not been set');
+    process.exit(1);
+  }
   if (mongooseConnection && !forceResfresh) { return mongooseConnection; }
 
   try {

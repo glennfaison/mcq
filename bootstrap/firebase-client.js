@@ -11,7 +11,12 @@ function run () {
   }
 
   const projectId = process.env.FIREBASE_PROJECT_ID;
-  if (!projectId && process.env.NODE_ENV !== 'testing') {
+  if (!projectId && process.env.NODE_ENV === 'testing') {
+    return {
+      auth: () => ({})
+    };
+  }
+  if (!projectId) {
     console.log('FIREBASE_PROJECT_ID environment variable has not been set');
     process.exit(1);
   }

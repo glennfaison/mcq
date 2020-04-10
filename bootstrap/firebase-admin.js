@@ -11,7 +11,12 @@ function run () {
   }
 
   const pathToServiceFile = process.env.FIREBASE_SERVICE_FILE;
-  if (!pathToServiceFile && process.env.NODE_ENV !== 'testing') {
+  if (!pathToServiceFile && process.env.NODE_ENV === 'testing') {
+    return {
+      auth: () => ({})
+    };
+  }
+  if (!pathToServiceFile) {
     console.log('FIREBASE_SERVICE_FILE environment variable has not been set');
     process.exit(1);
   }
