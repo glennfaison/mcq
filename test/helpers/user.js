@@ -1,7 +1,5 @@
-const AuthService = require('../../src/services/auth');
-const RoleService = require('../../src/services/role');
-const UserService = require('../../src/services/user');
-const Roles = require('../../src/enums/roles');
+const { AuthService, RoleService, UserService } = require('../../src/services');
+const { Roles } = require('../../src/enums');
 
 const createUserAndSignIn = async (userDetails) => {
   const exists = await UserService.findOne({ email: userDetails.email });

@@ -8,7 +8,7 @@ const faker = require('faker');
 const seeders = require('../../../src/seeders');
 const bootstrap = require('../../bootstrap');
 const mongoHelper = require('../../helpers/mongoose');
-const UserService = require('../../../src/services/user');
+const { UserService } = require('../../../src/services');
 const FirebaseDb = require('../../bootstrap/firebase-db');
 
 /** @type {import('../../../src/models/user').User} */

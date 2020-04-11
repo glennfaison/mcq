@@ -1,5 +1,5 @@
 const setUpMongoose = require('./mongoose');
-const AuthService = require('../../src/services/auth');
+const { AuthService } = require('../../src/services');
 const mockFirebaseAdminService = require('./firebase-admin');
 const mockFirebaseClientService = require('./firebase-client');
 

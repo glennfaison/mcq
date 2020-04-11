@@ -10,7 +10,7 @@ const userHelper = require('../../helpers/user');
 const seeders = require('../../../src/seeders');
 const FirebaseDb = require('../../bootstrap/firebase-db');
 const bootstrap = require('../../bootstrap');
-const authGuard = require('../../../src/middleware/auth-guard');
+const { authGuard } = require('../../../src/middleware');
 const createApplication = require('../../../src/app');
 const app = createApplication();
 
