@@ -47,7 +47,7 @@ router.get('/quiz-results', async (req, res, next) => {
  *        summary: Get quiz result
  *        description: Get a `QuizResult` by id
  *        tags:
- *          - QuizResult
+ *          - QuizResults
  *        operationId: getById
  *        parameters:
  *          - in: path
@@ -82,7 +82,7 @@ router.get('/quiz-results/:id', async (req, res, next) => {
  *        summary: Delete quiz result
  *        description: Fetch a `QuizResult` by id and delete
  *        tags:
- *          - Courses
+ *          - QuizResults
  *        operationId: deleteById
  *        parameters:
  *          - in: path
