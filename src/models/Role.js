@@ -34,7 +34,7 @@ const collectionNames = require('../../app.config').COLLECTION_NAMES;
  *      _isDeleted: boolean,
  *    }
  *    & import('mongoose').MongooseDocument
- *  } QuizResult
+ *  } Role
  */
 const RoleSchema = new Schema(
   {

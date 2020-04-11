@@ -31,7 +31,7 @@ const TopicService = require('../services/topic');
 router.post('/topics', authGuard, adminGuard, async (req, res, next) => {
   try {
     const data = await TopicService.create(req.body.topic);
-    return res.status(HttpStatus.OK).json({ data });
+    return res.status(HttpStatus.CREATED).json({ data });
   } catch (e) {
     return res.status(HttpStatus.UNPROCESSABLE_ENTITY).json(e);
   }

@@ -32,7 +32,7 @@ const collectionNames = require('../../app.config').COLLECTION_NAMES;
  *      _isDeleted: boolean,
  *    }
  *    & import('mongoose').MongooseDocument
- *  } QuizResult
+ *  } Topic
  */
 const TopicSchema = new Schema(
   {

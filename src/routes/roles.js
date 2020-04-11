@@ -31,7 +31,7 @@ const RoleService = require('../services/role');
 router.post('/roles', authGuard, adminGuard, async (req, res, next) => {
   try {
     const data = await RoleService.create(req.body.role);
-    return res.status(HttpStatus.OK).json({ data });
+    return res.status(HttpStatus.CREATED).json({ data });
   } catch (e) {
     return res.status(HttpStatus.UNPROCESSABLE_ENTITY).json(e);
   }
