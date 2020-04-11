@@ -1,11 +1,19 @@
-const Topic = require('../models/topic');
+const TopicModel = require('../models/topic');
 const mixin = require('../../helpers/mixin');
 
-class _TopicService {}
+class _TopicService {
+  findOneAndUpdate (conditions, properties) {
+    return TopicModel.findOneAndUpdate(conditions, properties, { new: true });
+  }
+
+  findByIdAndUpdate (id, properties) {
+    return this.findOneAndUpdate({ _id: id }, properties);
+  }
+}
 
 /** @typedef {_TopicService & import('mongoose').Model} TopicService */
 
 /** @type {TopicService} */
-const service = mixin(Topic, new _TopicService());
+const service = mixin(TopicModel, new _TopicService());
 
 module.exports = service;
