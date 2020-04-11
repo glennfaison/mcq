@@ -12,6 +12,7 @@ function makeRandomUser () {
   user.email = faker.internet.email(user.firstName, user.lastName);
   user.password = faker.internet.password();
   user.phoneNumber = faker.phone.phoneNumber();
+  user.photoURL = faker.internet.avatar();
   return user;
 }
 

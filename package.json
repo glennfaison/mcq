@@ -23,6 +23,9 @@
     "url": "https://github.com/glennfaison/mcq/issues"
   },
   "homepage": "https://github.com/glennfaison/mcq#readme",
+  "engines": {
+    "node": ">=12"
+  },
   "dependencies": {
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
