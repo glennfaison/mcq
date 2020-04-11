@@ -1,9 +1,9 @@
-const Role = require('../models/role');
+const { RoleModel } = require('../models');
 const mixin = require('../../helpers/mixin');
 
 class _RoleService {
   findOneAndUpdate (conditions, properties) {
-    return Role.findOneAndUpdate(conditions, properties, { new: true });
+    return RoleModel.findOneAndUpdate(conditions, properties, { new: true });
   }
 
   findByIdAndUpdate (id, properties) {
@@ -14,6 +14,6 @@ class _RoleService {
 /** @typedef {_RoleService & import('mongoose').Model} RoleService */
 
 /** @type {RoleService} */
-const service = mixin(Role, new _RoleService());
+const service = mixin(RoleModel, new _RoleService());
 
 module.exports = service;

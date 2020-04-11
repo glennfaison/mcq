@@ -1,4 +1,4 @@
-const UserModel = require('../models/User');
+const { UserModel } = require('../models');
 let firebaseAdmin = require('./firebase-admin');
 const mixin = require('../../helpers/mixin');
 

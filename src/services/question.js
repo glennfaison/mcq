@@ -1,4 +1,4 @@
-const QuestionModel = require('../models/question');
+const { QuestionModel } = require('../models');
 const mixin = require('../../helpers/mixin');
 
 class _QuestionService {

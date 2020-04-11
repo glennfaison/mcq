@@ -1,4 +1,4 @@
-const PrivilegeModel = require('../models/privilege');
+const { PrivilegeModel } = require('../models');
 const mixin = require('../../helpers/mixin');
 
 class _PrivilegeService {

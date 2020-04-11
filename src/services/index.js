@@ -1,13 +1,13 @@
 module.exports = {
-  courses: require('./courses'),
-  privileges: require('./privileges'),
-  questions: require('./questions'),
-  quizResults: require('./quiz-results'),
-  quizzes: require('./quizzes'),
-  roles: require('./roles'),
-  topics: require('./topics'),
-  users: require('./users'),
-  firebaseAdmin: require('./firebase-admin'),
-  firebaseClient: require('./firebase-client'),
-  auth: require('./auth')
+  CourseService: require('./course'),
+  PrivilegeService: require('./privilege'),
+  QuestionService: require('./question'),
+  QuizResultService: require('./quiz-result'),
+  QuizService: require('./quiz'),
+  RoleService: require('./role'),
+  TopicService: require('./topic'),
+  UserService: require('./user'),
+  FirebaseAdminService: require('./firebase-admin'),
+  FirebaseClientService: require('./firebase-client'),
+  AuthService: require('./auth')
 };

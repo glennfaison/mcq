@@ -1,6 +1,6 @@
 const HttpStatus = require('http-status-codes');
-const RoleService = require('../services/role');
-const Roles = require('../enums/roles');
+const { RoleService } = require('../services');
+const { Roles } = require('../enums');
 
 /**
  *  Middleware to allow access to a route only if the requester is an ADMIN

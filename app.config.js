@@ -9,7 +9,7 @@ const config = {
     QUIZ_RESULTS: 'QuizResults',
     SETTINGS: 'Settings',
     PRIVILEGES: 'Privileges',
-    ROLES: 'Roles',
+    ROLES: 'Roles'
   },
   ROUTE_NAMES: {
     USERS: '/users',
@@ -21,8 +21,8 @@ const config = {
     QUIZ_RESULTS: '/quiz-results',
     SETTINGS: '/settings',
     PRIVILEGES: '/privileges',
-    ROLES: '/roles',
-  },
+    ROLES: '/roles'
+  }
 };
 
 module.exports = config;

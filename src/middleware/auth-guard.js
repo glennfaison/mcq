@@ -1,5 +1,5 @@
 const HttpStatus = require('http-status-codes');
-const AuthService = require('../services/auth');
+const { AuthService } = require('../services');
 
 /**
  *  Middleware to allow access to a route only if the requester is logged in

@@ -1,4 +1,4 @@
-const CourseModel = require('../models/course');
+const { CourseModel } = require('../models');
 const mixin = require('../../helpers/mixin');
 
 class _CourseService {

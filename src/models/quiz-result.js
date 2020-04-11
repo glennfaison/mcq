@@ -1,8 +1,8 @@
 const { model, Schema } = require('mongoose');
 const collectionNames = require('../../app.config').COLLECTION_NAMES;
 
-const Quiz = require('./quiz');
-const Question = require('./question');
+const QuizModel = require('./quiz');
+const QuestionModel = require('./question');
 
 /**
  *  @swagger
@@ -41,7 +41,7 @@ const UserAnswerSchema = new Schema({
     ref: collectionNames.QUESTIONS
   },
   question: {
-    type: Question.schema,
+    type: QuestionModel.schema,
     required: false
   },
   correctOptionIndices: [Number],
@@ -121,7 +121,7 @@ const QuizResultSchema = new Schema(
     },
     quiz: {
       required: false,
-      type: Quiz.schema
+      type: QuizModel.schema
     },
     score: {
       type: Number,

@@ -1,8 +1,8 @@
 const { model, Schema } = require('mongoose');
 const collectionNames = require('../../app.config').COLLECTION_NAMES;
 
-const Question = require('./question');
-const Topic = require('./topic');
+const TopicModel = require('./topic');
+const QuestionModel = require('./question');
 
 /**
  *  @swagger
@@ -90,11 +90,11 @@ const QuizSchema = new Schema(
       ref: collectionNames.QUESTIONS
     }],
     topicList: {
-      type: [Topic.schema],
+      type: [TopicModel.schema],
       required: false
     },
     questionList: {
-      type: [Question.schema],
+      type: [QuestionModel.schema],
       required: false
     },
     createdBy: {

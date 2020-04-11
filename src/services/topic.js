@@ -1,4 +1,4 @@
-const TopicModel = require('../models/topic');
+const { TopicModel } = require('../models');
 const mixin = require('../../helpers/mixin');
 
 class _TopicService {
