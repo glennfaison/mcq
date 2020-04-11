@@ -6,7 +6,7 @@ require('dotenv').config();
 async function init () {
   await setUpMongoose();
   // run seeder functions
-  await seeders.role();
+  await seeders.roles();
   await seeders.users();
 
   return createServer();

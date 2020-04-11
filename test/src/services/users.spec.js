@@ -29,7 +29,7 @@ describe('User service', () => {
     FirebaseDb.clearDb();
     await mongoHelper.clearDb();
 
-    await seeders.role();
+    await seeders.roles();
     testUser = await seeders.users.generateOne();
   });
 

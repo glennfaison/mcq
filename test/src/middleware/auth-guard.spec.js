@@ -56,7 +56,7 @@ describe('API test for auth-based access', () => {
   beforeEach(async () => {
     await mongoHelper.clearDb();
     FirebaseDb.clearDb();
-    await seeders.role();
+    await seeders.roles();
 
     try {
       const admin = await userHelper.createAdminAndSignIn(testAdmin);

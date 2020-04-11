@@ -45,7 +45,7 @@ describe('Courses Endpoint Test', () => {
     FirebaseDb.clearDb();
     await mongoHelper.clearDb();
 
-    await seeders.role();
+    await seeders.roles();
     [testAdmin, testUser1] = await seeders.users.generate(2);
 
     const admin = await userHelper.createAdminAndSignIn(testAdmin);
