@@ -6,5 +6,8 @@ module.exports = {
   quizzes: require('./quizzes'),
   roles: require('./roles'),
   topics: require('./topics'),
-  users: require('./users')
+  users: require('./users'),
+  firebaseAdmin: require('./firebase-admin'),
+  firebaseClient: require('./firebase-client'),
+  auth: require('./auth')
 };
