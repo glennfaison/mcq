@@ -91,7 +91,7 @@ describe('Auth Endpoint Test', () => {
 
   describe('POST /api/v1/auth/login', () => {
     it('should fail to sign a user in without the \'email\' field', async () => {
-      const user = users.defaultUser1.user;
+      const user = users.defaultUser1.user.toJSON();
       delete user.email;
       user.password = users.defaultUser1.password;
       const res = await chai.request(app).post('/api/v1/auth/login')
@@ -129,13 +129,13 @@ describe('Auth Endpoint Test', () => {
     });
 
     it('should sign a user in', async () => {
-      const user = users.defaultUser1.user;
+      const user = users.defaultUser1.user.toJSON();
       user.password = users.defaultUser1.password;
       const res = await chai.request(app).post('/api/v1/auth/login')
         .send({ user });
       expect(res.error).to.be.false;
       expect(res.body.data).to.be.a('string');
-      expect(res).to.have.status(HttpStatus.CREATED);
+      expect(res).to.have.status(HttpStatus.OK);
     });
   });
 });

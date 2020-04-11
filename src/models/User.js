@@ -104,6 +104,26 @@ const UserSchema = new Schema({
   }
 }, { collection: collectionNames.USERS });
 
+UserSchema.methods.toJSON = function () {
+  const user = {
+    id: this.id,
+    _id: this._id,
+    uid: this.uid,
+    email: this.email,
+    emailVerified: this.emailVerified,
+    displayName: this.displayName,
+    photoURL: this.photoURL,
+    phoneNumber: this.phoneNumber,
+    disabled: this.disabled,
+    passwordHash: this.passwordHash,
+    passwordSalt: this.passwordSalt,
+    tokensValidAfterTime: this.tokensValidAfterTime,
+    roleId: this.roleId
+  };
+  if (this.password) { user.password = this.password; }
+  return user;
+};
+
 const User = model(collectionNames.USERS, UserSchema);
 
 module.exports = User;
