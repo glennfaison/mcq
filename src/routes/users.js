@@ -23,7 +23,11 @@ const UserService = require('../services/user');
  *                  $ref: '#/components/schemas/User'
  */
 router.get('/users/me', authGuard, async (req, res, next) => {
-  return res.status(HttpStatus.OK).json({ data: req.auth });
+  try {
+    return res.status(HttpStatus.OK).json({ data: req.auth });
+  } catch (e) {
+    next(e);
+  }
 });
 
 /**
@@ -57,7 +61,7 @@ router.get('/users', async (req, res, next) => {
     const data = await UserService.find(req.query);
     return res.status(HttpStatus.OK).json({ data });
   } catch (e) {
-    return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(e);
+    next(e);
   }
 });
 
@@ -92,7 +96,7 @@ router.get('/users/:id', async (req, res, next) => {
     if (!data) { return res.sendStatus(HttpStatus.NOT_FOUND); }
     return res.status(HttpStatus.OK).json({ data });
   } catch (e) {
-    return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(e);
+    next(e);
   }
 });
 
@@ -125,7 +129,7 @@ router.put('/users/me', authGuard, async (req, res, next) => {
     const data = await UserService.findByIdAndUpdate(req.auth.id, req.body.user);
     return res.status(HttpStatus.OK).json({ data });
   } catch (e) {
-    return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(e);
+    next(e);
   }
 });
 
@@ -165,7 +169,7 @@ router.put('/users/:id', authGuard, adminGuard, async (req, res, next) => {
     if (!data) { return res.sendStatus(HttpStatus.NOT_FOUND); }
     return res.status(HttpStatus.OK).json({ data });
   } catch (e) {
-    return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(e);
+    next(e);
   }
 });
 
@@ -194,7 +198,7 @@ router.delete('/users/me', authGuard, async (req, res, next) => {
     await UserService.findByIdAndDelete(req.auth.id);
     return res.sendStatus(HttpStatus.NO_CONTENT);
   } catch (e) {
-    return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(e);
+    next(e);
   }
 });
 
@@ -224,7 +228,7 @@ router.delete('/users/:id', authGuard, adminGuard, async (req, res, next) => {
     await UserService.findByIdAndDelete(req.params.id);
     return res.sendStatus(HttpStatus.NO_CONTENT);
   } catch (e) {
-    return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(e);
+    next(e);
   }
 });
 
