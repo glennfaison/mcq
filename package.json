@@ -4,6 +4,7 @@
   "description": "API to a MCQ web service",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon index.js",
     "test": "NODE_ENV=testing mocha --no-timeouts --recursive --exit"
   },
   "repository": {
@@ -32,6 +33,7 @@
     "firebase-admin": "^8.10.0",
     "http-status-codes": "^1.4.0",
     "mongoose": "^5.9.7",
+    "nodemon": "^2.0.3",
     "strong-error-handler": "^3.4.0",
     "swagger-jsdoc": "^4.0.0",
     "swagger-ui-express": "^4.1.4"

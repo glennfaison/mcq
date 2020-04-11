@@ -18,5 +18,8 @@
         "semi": [2, "always"],
         "comma-dangle": "error",
         "no-unused-expressions": "off"
-    }
+    },
+    "ignorePatterns": [
+        "**/node_modules/**"
+    ]
 }
