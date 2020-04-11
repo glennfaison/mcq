@@ -2,5 +2,6 @@ module.exports = {
   courses: require('./courses'),
   roles: require('./roles'),
   users: require('./users'),
-  topics: require('./topics')
+  topics: require('./topics'),
+  questions: require('./questions')
 };
