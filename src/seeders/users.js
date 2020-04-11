@@ -1,6 +1,5 @@
-const UserService = require('../services/user');
-const RoleService = require('../services/role');
-const Roles = require('../enums/roles');
+const { UserService, RoleService } = require('../services');
+const { Roles } = require('../enums');
 const faker = require('faker');
 
 function makeRandomUser () {

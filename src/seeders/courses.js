@@ -1,7 +1,5 @@
-const CourseService = require('../services/course');
-const RoleService = require('../services/role');
-const UserService = require('../services/user');
-const Roles = require('../enums/roles');
+const { CourseService, RoleService, UserService } = require('../services');
+const { Roles } = require('../enums');
 const faker = require('faker');
 
 function makeRandomCourse () {
