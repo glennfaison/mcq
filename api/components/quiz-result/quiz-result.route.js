@@ -6,6 +6,41 @@ const QuizResultService = require('./quiz-result.service');
 /**
  *  @swagger
  *  paths:
+ *    /api/v1/quiz-results/submit:
+ *      post:
+ *        summary: Submit Quiz
+ *        description: Submit an answered Quiz for evaluation
+ *        tags:
+ *          - QuizResults
+ *        operationId: submit
+ *        parameters:
+ *          - in: body
+ *            schema:
+ *              type: object
+ *              properties:
+ *                $ref: '#/components/schemas/QuizResult'
+ *        responses:
+ *          202:
+ *            description: Accepted
+ *            content:
+ *              apppliaction/json:
+ *                schema:
+ *                  type: array
+ *                  items:
+ *                    $ref: '#/components/schemas/QuizResult'
+ */
+router.post('/quiz-results/submit', async (req, res, next) => {
+  try {
+    const data = await QuizResultService.create(req.body.quiz);
+    return res.status(HttpStatus.ACCEPTED).json({ data });
+  } catch (e) {
+    next(e);
+  }
+});
+
+/**
+ *  @swagger
+ *  paths:
  *    /api/v1/quiz-results:
  *      get:
  *        summary: list quiz results

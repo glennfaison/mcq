@@ -30,8 +30,7 @@ const collectionNames = require('../../../app.config').COLLECTION_NAMES;
  *      courseCode: string,
  *      createdBy: string,
  *      _isDeleted: boolean,
- *    }
- *    & import('mongoose').MongooseDocument
+ *    } & import('mongoose').MongooseDocument
  *  } Course
  */
 const CourseSchema = new Schema(

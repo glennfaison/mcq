@@ -3,7 +3,7 @@ const setUp = require('../../configuration/firebase-client');
 
 let _firebaseClient = setUp();
 
-class _FirebaseClientService {
+class Service {
   /**
    *  Inject dependencies into this service
    *  @param {{firebase:any}} { firebase }
@@ -13,9 +13,9 @@ class _FirebaseClientService {
   }
 }
 
-/** @typedef {_FirebaseClientService & import('firebase').auth.Auth} FirebaseClientService */
+/** @typedef {Service & import('firebase').auth.Auth} FirebaseClientService */
 
 /** @type {FirebaseClientService} */
-const client = mixin(_firebaseClient.auth(), new _FirebaseClientService());
+const client = mixin(_firebaseClient.auth(), new Service());
 
 module.exports = client;

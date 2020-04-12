@@ -14,8 +14,6 @@ const collectionNames = require('../../../app.config').COLLECTION_NAMES;
  *            type: string
  *          description:
  *            type: string
- *          type:
- *            type: string
  *          privilegeIds:
  *            type: array
  *            items:
@@ -29,11 +27,9 @@ const collectionNames = require('../../../app.config').COLLECTION_NAMES;
  *  {{
  *      name: string,
  *      description: string,
- *      type: string,
  *      privilegeIds: string[],
  *      _isDeleted: boolean,
- *    }
- *    & import('mongoose').MongooseDocument
+ *    } & import('mongoose').MongooseDocument
  *  } Role
  */
 const RoleSchema = new Schema(
@@ -49,10 +45,6 @@ const RoleSchema = new Schema(
       type: String,
       required: false
     },
-    type: {
-      type: String,
-      required: true
-    },
     privilegeIds: {
       type: [Schema.Types.ObjectId],
       ref: collectionNames.USERS
@@ -66,6 +58,6 @@ const RoleSchema = new Schema(
   { collection: collectionNames.ROLES }
 );
 
-const Role = model(collectionNames.ROLES, RoleSchema);
+const RoleModel = model(collectionNames.ROLES, RoleSchema);
 
-module.exports = Role;
+module.exports = RoleModel;

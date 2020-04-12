@@ -32,13 +32,12 @@ const collectionNames = require('../../../app.config').COLLECTION_NAMES;
  *  @typedef
  *  {{
  *      text: string,
- *      correctOptionIndices: string[],
+ *      correctOptionIndices: number[],
  *      optionList: string[],
  *      topicId: string,
  *      createdBy: string,
  *      _isDeleted: boolean,
- *    }
- *    & import('mongoose').MongooseDocument
+ *    } & import('mongoose').MongooseDocument
  *  } Question
  */
 const QuestionSchema = new Schema(
@@ -67,6 +66,6 @@ const QuestionSchema = new Schema(
   { collection: collectionNames.QUESTIONS }
 );
 
-const Question = model(collectionNames.QUESTIONS, QuestionSchema);
+const QuestionModel = model(collectionNames.QUESTIONS, QuestionSchema);
 
-module.exports = Question;
+module.exports = QuestionModel;

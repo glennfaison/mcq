@@ -1,7 +1,7 @@
 const CourseModel = require('./course.model');
 const mixin = require('../../helpers/mixin');
 
-class _CourseService {
+class Service {
   findOneAndUpdate (conditions, properties) {
     return CourseModel.findOneAndUpdate(conditions, properties, { new: true });
   }
@@ -11,9 +11,9 @@ class _CourseService {
   }
 }
 
-/** @typedef {_CourseService & import('mongoose').Model} CourseService */
+/** @typedef {Service & import('mongoose').Model} CourseService */
 
 /** @type {CourseService} */
-const service = mixin(CourseModel, new _CourseService());
+const service = mixin(CourseModel, new Service());
 
 module.exports = service;
