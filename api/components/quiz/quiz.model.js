@@ -14,8 +14,6 @@ const collectionNames = require('../../../app.config').COLLECTION_NAMES;
  *            type: string
  *          description:
  *            type: string
- *          timeAllowed:
- *            type: number
  *          topicIdList:
  *            type: array
  *            items:
@@ -37,8 +35,6 @@ const collectionNames = require('../../../app.config').COLLECTION_NAMES;
  *  {{
  *      name: string,
  *      description: string,
- *      timeAllowed: number,
- *      questionCount: number,
  *      topicIdList: string[],
  *      questionIdList: string[],
  *      expiresAt: date,
@@ -59,11 +55,6 @@ const QuizSchema = new Schema(
       type: String,
       required: true
     },
-    timeAllowed: {
-      type: Number,
-      required: true,
-      default: 60000 // One minute, in milliseconds.
-    },
     topicIdList: [{
       type: Schema.Types.ObjectId,
       ref: collectionNames.TOPICS
@@ -72,7 +63,11 @@ const QuizSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: collectionNames.QUESTIONS
     }],
-    expiresAt: Date,
+    expiresAt: {
+      type: Date,
+      // 24 hours from creation time
+      default: () => Date.now() + (24 * 60 * 60 * 1000)
+    },
     createdBy: {
       required: true,
       type: Schema.Types.ObjectId,
@@ -87,6 +82,6 @@ const QuizSchema = new Schema(
   { collection: collectionNames.QUIZZES }
 );
 
-const Quiz = model(collectionNames.QUIZZES, QuizSchema);
+const QuizModel = model(collectionNames.QUIZZES, QuizSchema);
 
-module.exports = Quiz;
+module.exports = QuizModel;

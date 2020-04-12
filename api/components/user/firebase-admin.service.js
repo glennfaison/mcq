@@ -3,7 +3,7 @@ const setUp = require('../../configuration/firebase-admin');
 
 let _firebaseAdmin = setUp();
 
-class _FirebaseAdminService {
+class Service {
   /**
    *  Inject dependencies into this service
    *  @param {{firebase:any}} { firebase }
@@ -62,9 +62,9 @@ class _FirebaseAdminService {
   }
 }
 
-/** @typedef {_FirebaseAdminService & import('firebase-admin').auth.Auth} FirebaseAdminService */
+/** @typedef {Service & import('firebase-admin').auth.Auth} FirebaseAdminService */
 
 /** @type {FirebaseAdminService} */
-const admin = mixin(_firebaseAdmin.auth(), new _FirebaseAdminService());
+const admin = mixin(_firebaseAdmin.auth(), new Service());
 
 module.exports = admin;

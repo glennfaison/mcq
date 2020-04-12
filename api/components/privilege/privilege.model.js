@@ -29,8 +29,7 @@ const collectionNames = require('../../../app.config').COLLECTION_NAMES;
  *      description: string,
  *      type: string,
  *      _isDeleted: boolean,
- *    }
- *    & import('mongoose').MongooseDocument
+ *    } & import('mongoose').MongooseDocument
  *  } Privilege
  */
 const PrivilegeSchema = new Schema(
@@ -59,6 +58,6 @@ const PrivilegeSchema = new Schema(
   { collection: collectionNames.PRIVILEGES }
 );
 
-const Privilege = model(collectionNames.PRIVILEGES, PrivilegeSchema);
+const PrivilegeModel = model(collectionNames.PRIVILEGES, PrivilegeSchema);
 
-module.exports = Privilege;
+module.exports = PrivilegeModel;

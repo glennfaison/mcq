@@ -30,8 +30,7 @@ const collectionNames = require('../../../app.config').COLLECTION_NAMES;
  *      courseId: string,
  *      createdBy: string,
  *      _isDeleted: boolean,
- *    }
- *    & import('mongoose').MongooseDocument
+ *    } & import('mongoose').MongooseDocument
  *  } Topic
  */
 const TopicSchema = new Schema(
@@ -65,6 +64,6 @@ const TopicSchema = new Schema(
   { collection: collectionNames.TOPICS }
 );
 
-const Topic = model(collectionNames.TOPICS, TopicSchema);
+const TopicModel = model(collectionNames.TOPICS, TopicSchema);
 
-module.exports = Topic;
+module.exports = TopicModel;

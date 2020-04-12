@@ -51,8 +51,7 @@ const collectionNames = require('../../../app.config').COLLECTION_NAMES;
  *      tokensValidAfterTime: Date,
  *      roleId: string,
  *      _isDeleted: boolean,
- *    }
- *    & import('mongoose').MongooseDocument
+ *    } & import('mongoose').MongooseDocument
  *  } User
  */
 const UserSchema = new Schema({
@@ -124,6 +123,6 @@ UserSchema.methods.toJSON = function () {
   return user;
 };
 
-const User = model(collectionNames.USERS, UserSchema);
+const UserModel = model(collectionNames.USERS, UserSchema);
 
-module.exports = User;
+module.exports = UserModel;
