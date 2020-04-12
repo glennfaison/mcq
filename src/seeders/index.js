@@ -3,5 +3,6 @@ module.exports = {
   roles: require('./roles'),
   users: require('./users'),
   topics: require('./topics'),
-  questions: require('./questions')
+  questions: require('./questions'),
+  quizzes: require('./quizzes')
 };
