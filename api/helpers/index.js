@@ -2,5 +2,6 @@ module.exports = {
   initializeTest: require('./initialize-test'),
   mixin: require('./mixin'),
   mongodbHelper: require('./mongodb'),
-  userHelper: require('./user')
+  userHelper: require('./user'),
+  GenericCrudService: require('./generic-crud-service')
 };
