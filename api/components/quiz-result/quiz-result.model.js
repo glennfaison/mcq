@@ -1,8 +1,8 @@
 const { model, Schema } = require('mongoose');
 const collectionNames = require('../../../app.config').COLLECTION_NAMES;
 
-const QuizModel = require('../quiz/quiz.model');
-const QuestionModel = require('../question/question.model');
+// const QuizModel = require('../quiz/quiz.model');
+// const QuestionModel = require('../question/question.model');
 
 /**
  *  @swagger
@@ -15,24 +15,21 @@ const QuestionModel = require('../question/question.model');
  *            type: string
  *          questionId:
  *            type: string
- *          question:
- *            type: object
- *            schema:
- *              $ref: '#/components/schemas/Question'
- *          correctOptionIndices:
- *            type: array
- *            items:
- *              type: number
  *          selectedOptionIndices:
  *            type: array
  *            items:
  *              type: number
- *          optionList:
- *            type: array
- *            items:
- *              type: string
  *          isCorrect:
  *            type: boolean
+ */
+
+/**
+ *  @typedef
+ *  {{
+ *      questionId: string,
+ *      selectedOptionIndices: number[],
+ *      isCorrect: boolean,
+ *    }} UserAnswer
  */
 const UserAnswerSchema = new Schema({
   questionId: {
@@ -40,13 +37,7 @@ const UserAnswerSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: collectionNames.QUESTIONS
   },
-  question: {
-    type: QuestionModel.schema,
-    required: false
-  },
-  correctOptionIndices: [Number],
   selectedOptionIndices: [Number],
-  optionList: [String],
   isCorrect: {
     type: Boolean,
     required: false,
@@ -67,20 +58,8 @@ const UserAnswerSchema = new Schema({
  *            type: string
  *          quizId:
  *            type: string
- *          quiz:
- *            type: object
- *            schema:
- *              $ref: '#/components/schemas/Quiz'
  *          score:
  *            type: number
- *          startedOn:
- *            type: date
- *          isCompleted:
- *            type: boolean
- *          correctOptionIndices:
- *            type: array
- *            items:
- *              type: number
  *          userAnswerList:
  *            type: array
  *            items:
@@ -96,15 +75,10 @@ const UserAnswerSchema = new Schema({
  *  {{
  *      userId: string,
  *      quizId: string,
- *      quiz: Quiz,
  *      score: number,
- *      startedOn: number,
- *      isCompleted: boolean,
- *      userAnswerList: string[],
- *      createdBy: string,
+ *      userAnswerList: UserAnswer[],
  *      _isDeleted: boolean,
- *    }
- *    & import('mongoose').MongooseDocument
+ *    } & import('mongoose').MongooseDocument
  *  } QuizResult
  */
 const QuizResultSchema = new Schema(
@@ -119,28 +93,13 @@ const QuizResultSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: collectionNames.QUIZZES
     },
-    quiz: {
-      required: false,
-      type: QuizModel.schema
-    },
     score: {
       type: Number,
       required: false
     },
-    startedOn: Date,
-    isCompleted: {
-      required: false,
-      type: Boolean,
-      default: false
-    },
     userAnswerList: {
       type: [UserAnswerSchema],
       default: []
-    },
-    createdBy: {
-      required: true,
-      type: Schema.Types.ObjectId,
-      ref: collectionNames.USERS
     },
     _isDeleted: {
       required: false,

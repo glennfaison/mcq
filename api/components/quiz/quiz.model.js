@@ -1,9 +1,6 @@
 const { model, Schema } = require('mongoose');
 const collectionNames = require('../../../app.config').COLLECTION_NAMES;
 
-const TopicModel = require('../topic/topic.model');
-const QuestionModel = require('../question/question.model');
-
 /**
  *  @swagger
  *  components:
@@ -19,8 +16,6 @@ const QuestionModel = require('../question/question.model');
  *            type: string
  *          timeAllowed:
  *            type: number
- *          questionCount:
- *            type: string
  *          topicIdList:
  *            type: array
  *            items:
@@ -29,14 +24,8 @@ const QuestionModel = require('../question/question.model');
  *            type: array
  *            items:
  *              type: string
- *          topicList:
- *            type: array
- *            items:
- *              $ref: '#/components/schemas/Topic'
- *          questionList:
- *            type: array
- *            items:
- *              $ref: '#/components/schemas/Question'
+ *          expiresAt:
+ *            type: date
  *          createdBy:
  *            type: string
  *          _isDeleted:
@@ -52,12 +41,10 @@ const QuestionModel = require('../question/question.model');
  *      questionCount: number,
  *      topicIdList: string[],
  *      questionIdList: string[],
- *      topicList: import('../topic/topic.model').Topic[],
- *      questionList: import('../question/question.model').Question[],
+ *      expiresAt: date,
  *      createdBy: string,
  *      _isDeleted: boolean,
- *    }
- *    & import('mongoose').MongooseDocument
+ *    } & import('mongoose').MongooseDocument
  *  } Quiz
  */
 const QuizSchema = new Schema(
@@ -77,10 +64,6 @@ const QuizSchema = new Schema(
       required: true,
       default: 60000 // One minute, in milliseconds.
     },
-    questionCount: {
-      type: Number,
-      default: 1
-    },
     topicIdList: [{
       type: Schema.Types.ObjectId,
       ref: collectionNames.TOPICS
@@ -89,14 +72,7 @@ const QuizSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: collectionNames.QUESTIONS
     }],
-    topicList: {
-      type: [TopicModel.schema],
-      required: false
-    },
-    questionList: {
-      type: [QuestionModel.schema],
-      required: false
-    },
+    expiresAt: Date,
     createdBy: {
       required: true,
       type: Schema.Types.ObjectId,
