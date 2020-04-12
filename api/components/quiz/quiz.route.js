@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const HttpStatus = require('http-status-codes');
 const { authGuard, adminGuard } = require('../../middleware');
-const Quizzeservice = require('./quiz.service');
+const QuizService = require('./quiz.service');
 
 /**
  *  @swagger
@@ -29,7 +29,7 @@ const Quizzeservice = require('./quiz.service');
  */
 router.post('/quizzes', authGuard, adminGuard, async (req, res, next) => {
   try {
-    const data = await Quizzeservice.create(req.body.quiz);
+    const data = await QuizService.create(req.body.quiz);
     return res.status(HttpStatus.CREATED).json({ data });
   } catch (e) {
     return res.status(HttpStatus.UNPROCESSABLE_ENTITY).json(e);
@@ -64,7 +64,7 @@ router.post('/quizzes', authGuard, adminGuard, async (req, res, next) => {
  */
 router.get('/quizzes', async (req, res, next) => {
   try {
-    const data = await Quizzeservice.find(req.query);
+    const data = await QuizService.find(req.query);
     return res.status(HttpStatus.OK).json({ data });
   } catch (e) {
     next(e);
@@ -98,7 +98,7 @@ router.get('/quizzes', async (req, res, next) => {
  */
 router.get('/quizzes/:id', async (req, res, next) => {
   try {
-    const data = await Quizzeservice.findById(req.params.id);
+    const data = await QuizService.findById(req.params.id);
     if (!data) { return res.sendStatus(HttpStatus.NOT_FOUND); }
     return res.status(HttpStatus.OK).json({ data });
   } catch (e) {
@@ -138,7 +138,7 @@ router.get('/quizzes/:id', async (req, res, next) => {
  */
 router.put('/quizzes/:id', authGuard, adminGuard, async (req, res, next) => {
   try {
-    const data = await Quizzeservice.findByIdAndUpdate(req.params.id, req.body.quiz);
+    const data = await QuizService.findByIdAndUpdate(req.params.id, req.body.quiz);
     if (!data) { return res.sendStatus(HttpStatus.NOT_FOUND); }
     return res.status(HttpStatus.OK).json({ data });
   } catch (e) {
@@ -169,7 +169,7 @@ router.put('/quizzes/:id', authGuard, adminGuard, async (req, res, next) => {
  */
 router.delete('/quizzes/:id', authGuard, adminGuard, async (req, res, next) => {
   try {
-    await Quizzeservice.findByIdAndDelete(req.params.id);
+    await QuizService.findByIdAndDelete(req.params.id);
     return res.sendStatus(HttpStatus.NO_CONTENT);
   } catch (e) {
     next(e);
