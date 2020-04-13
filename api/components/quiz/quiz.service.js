@@ -1,19 +1,12 @@
 const QuizModel = require('./quiz.model');
-const mixin = require('../../helpers/mixin');
+const GenericCrudService = require('../../helpers/generic-crud-service');
 
-class Service {
-  findOneAndUpdate (conditions, properties) {
-    return QuizModel.findOneAndUpdate(conditions, properties, { new: true });
-  }
-
-  findByIdAndUpdate (id, properties) {
-    return this.findOneAndUpdate({ _id: id }, properties);
+class QuizService extends GenericCrudService {
+  constructor () {
+    super(QuizModel);
   }
 }
 
-/** @typedef {Service & import('mongoose').Model} QuizService */
-
-/** @type {QuizService} */
-const service = mixin(QuizModel, new Service());
+const service = new QuizService();
 
 module.exports = service;

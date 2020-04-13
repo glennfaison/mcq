@@ -1,8 +1,12 @@
 const UserModel = require('./user.model');
 let firebaseAdminService = require('./firebase-admin.service');
-const mixin = require('../../helpers/mixin');
+const GenericCrudService = require('../../helpers/generic-crud-service');
 
-class Service {
+class UserService extends GenericCrudService {
+  constructor () {
+    super(UserModel);
+  }
+
   /**
    *  Inject dependencies into this service
    *  @param {{firebase:any}} { firebase }
@@ -34,58 +38,33 @@ class Service {
     }
   }
 
-  async findOneAndUpdate (conditions, user) {
-    delete user.id;
-    delete user._id;
-    try {
-      const res = await UserModel.findOneAndUpdate(conditions, user, { new: true });
-      firebaseAdminService.updateUser(res.uid, res);
-      return res;
-    } catch (e) {
-      return null;
-    }
+  async findOneAndUpdate (conditions, properties) {
+    const res = await super.findOneAndUpdate(conditions, properties);
+    firebaseAdminService.updateUser(res.uid, res);
+    return res;
+  }
+
+  async findByIdAndUpdate (id, properties) {
+    const res = await super.findByIdAndUpdate(id, properties);
+    firebaseAdminService.updateUser(res.uid, res);
+    return res;
   }
 
   async findOneAndDelete (conditions) {
-    try {
-      const first = await UserModel.findOneAndDelete(conditions);
-      await firebaseAdminService.deleteUser(first._id.toString());
-    } catch (e) {}
+    const res = await super.findOneAndDelete(conditions);
+    if (!res) { return null; }
+    await firebaseAdminService.deleteUser(res.uid);
+    return res;
   }
 
-  findByIdAndUpdate (id, ...others) {
-    return this.findOneAndUpdate({ _id: id }, ...others);
-  }
-
-  findByIdAndDelete (id, ...others) {
-    return this.findOneAndDelete({ _id: id }, ...others);
-  }
-
-  async findOne (conditions, ...others) {
-    try {
-      return await UserModel.findOne(conditions, ...others);
-    } catch (e) {
-      return null;
-    }
-  }
-
-  findById (id, ...others) {
-    return this.findOne({ _id: id }, ...others);
-  }
-
-  find (conditions, ...others) {
-    try {
-      return UserModel.find(conditions, ...others);
-    } catch (e) {
-      return [];
-    }
+  async findByIdAndDelete (id) {
+    const res = await super.findByIdAndDelete(id);
+    if (!res) { return null; }
+    await firebaseAdminService.deleteUser(res.uid);
+    return res;
   }
 }
 
-/** @typedef {Service & import('mongoose').Model} UserService */
-/** @typedef {import('./user.model').User} User */
-
-/** @type {UserService} */
-const service = mixin(UserModel, new Service());
+const service = new UserService();
 
 module.exports = service;
