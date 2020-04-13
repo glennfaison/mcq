@@ -11,7 +11,7 @@ router.use(baseApi, require('./course/course.route'));
 router.use(baseApi, require('./topic/topic.route'));
 router.use(baseApi, require('./question/question.route'));
 router.use(baseApi, require('./quiz/quiz.route'));
-router.use(baseApi, require('./quiz-result/quiz-result.route'));
+router.use(baseApi, require('./result/result.route'));
 router.use(baseApi, require('./role/role.route'));
 router.use(baseApi, require('./privilege/privilege.route'));
 

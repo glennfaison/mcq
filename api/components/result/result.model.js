@@ -1,9 +1,6 @@
 const { model, Schema } = require('mongoose');
 const collectionNames = require('../../../app.config').COLLECTION_NAMES;
 
-// const QuizModel = require('../quiz/quiz.model');
-// const QuestionModel = require('../question/question.model');
-
 /**
  *  @swagger
  *  components:
@@ -29,7 +26,7 @@ const collectionNames = require('../../../app.config').COLLECTION_NAMES;
  *      questionId: string,
  *      selectedOptionIndices: number[],
  *      isCorrect: boolean,
- *    }} UserAnswer
+ *  }} UserAnswer
  */
 const UserAnswerSchema = new Schema({
   questionId: {
@@ -49,7 +46,7 @@ const UserAnswerSchema = new Schema({
  *  @swagger
  *  components:
  *    schemas:
- *      QuizResult:
+ *      Result:
  *        type: object
  *        properties:
  *          id:
@@ -79,9 +76,9 @@ const UserAnswerSchema = new Schema({
  *      userAnswerList: UserAnswer[],
  *      _isDeleted: boolean,
  *    } & import('mongoose').MongooseDocument
- *  } QuizResult
+ *  } Result
  */
-const QuizResultSchema = new Schema(
+const ResultSchema = new Schema(
   {
     userId: {
       required: true,
@@ -107,9 +104,9 @@ const QuizResultSchema = new Schema(
       default: false
     }
   },
-  { collection: collectionNames.QUIZ_RESULTS }
+  { collection: collectionNames.RESULTS }
 );
 
-const QuizResult = model(collectionNames.QUIZ_RESULTS, QuizResultSchema);
+const ResultModel = model(collectionNames.RESULTS, ResultSchema);
 
-module.exports = QuizResult;
+module.exports = ResultModel;

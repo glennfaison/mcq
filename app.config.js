@@ -6,7 +6,7 @@ const config = {
     QUESTIONS: 'Questions',
     OPTIONS: 'Options',
     QUIZZES: 'Quizzes',
-    QUIZ_RESULTS: 'QuizResults',
+    RESULTS: 'Results',
     SETTINGS: 'Settings',
     PRIVILEGES: 'Privileges',
     ROLES: 'Roles'
@@ -18,7 +18,7 @@ const config = {
     QUESTIONS: '/questions',
     OPTIONS: '/options',
     QUIZZES: '/quizzes',
-    QUIZ_RESULTS: '/quiz-results',
+    RESULTS: '/results',
     SETTINGS: '/settings',
     PRIVILEGES: '/privileges',
     ROLES: '/roles'
