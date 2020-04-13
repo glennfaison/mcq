@@ -47,7 +47,7 @@ const RoleSchema = new Schema(
     },
     privilegeIds: {
       type: [Schema.Types.ObjectId],
-      ref: collectionNames.USERS
+      ref: collectionNames.PRIVILEGES
     },
     _isDeleted: {
       required: false,
