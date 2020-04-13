@@ -168,7 +168,7 @@ router.put('/users/:id', authGuard, adminGuard, async (req, res, next) => {
     if (!data) { return res.sendStatus(HttpStatus.NOT_FOUND); }
     return res.status(HttpStatus.OK).json({ data });
   } catch (e) {
-    next(e);
+    return res.sendStatus(HttpStatus.NOT_FOUND);
   }
 });
 

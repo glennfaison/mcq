@@ -1,19 +1,12 @@
 const PrivilegeModel = require('./privilege.model');
-const mixin = require('../../helpers/mixin');
+const GenericCrudService = require('../../helpers/generic-crud-service');
 
-class Service {
-  findOneAndUpdate (conditions, properties) {
-    return PrivilegeModel.findOneAndUpdate(conditions, properties, { new: true });
-  }
-
-  findByIdAndUpdate (id, properties) {
-    return this.findOneAndUpdate({ _id: id }, properties);
+class PrivilegeService extends GenericCrudService {
+  constructor () {
+    super(PrivilegeModel);
   }
 }
 
-/** @typedef {Service & import('mongoose').Model} PrivilegeService */
-
-/** @type {PrivilegeService} */
-const service = mixin(PrivilegeModel, new Service());
+const service = new PrivilegeService();
 
 module.exports = service;

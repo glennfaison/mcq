@@ -1,19 +1,12 @@
 const CourseModel = require('./course.model');
-const mixin = require('../../helpers/mixin');
+const GenericCrudService = require('../../helpers/generic-crud-service');
 
-class Service {
-  findOneAndUpdate (conditions, properties) {
-    return CourseModel.findOneAndUpdate(conditions, properties, { new: true });
-  }
-
-  findByIdAndUpdate (id, properties) {
-    return this.findOneAndUpdate({ _id: id }, properties);
+class CourseService extends GenericCrudService {
+  constructor () {
+    super(CourseModel);
   }
 }
 
-/** @typedef {Service & import('mongoose').Model} CourseService */
-
-/** @type {CourseService} */
-const service = mixin(CourseModel, new Service());
+const service = new CourseService();
 
 module.exports = service;
