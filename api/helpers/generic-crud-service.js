@@ -94,7 +94,7 @@ class GenericCrudService {
    *  @param {string} id value of _id to query by
    *  @returns {Promise<Model>} the deleted document
    */
-  findByIdAndDelete (id, properties) {
+  findByIdAndDelete (id) {
     return this.model.findByIdAndDelete(id);
   }
 
