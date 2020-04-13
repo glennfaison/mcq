@@ -2,6 +2,7 @@ const router = require('express').Router();
 const HttpStatus = require('http-status-codes');
 const { authGuard, adminGuard } = require('../../middleware');
 const QuizService = require('./quiz.service');
+const ResultService = require('../result/result.service');
 
 /**
  *  @swagger
@@ -171,6 +172,77 @@ router.delete('/quizzes/:id', authGuard, adminGuard, async (req, res, next) => {
   try {
     await QuizService.findByIdAndDelete(req.params.id);
     return res.sendStatus(HttpStatus.NO_CONTENT);
+  } catch (e) {
+    next(e);
+  }
+});
+
+/**
+ *  @swagger
+ *  paths:
+ *    /api/v1/quizzes/{id}/submit:
+ *      post:
+ *        summary: Submit Quiz
+ *        description: Submit an answered Quiz for evaluation
+ *        tags:
+ *          - Results
+ *        operationId: submit
+ *        parameters:
+ *          - in: body
+ *            schema:
+ *              type: object
+ *              properties:
+ *                $ref: '#/components/schemas/Result'
+ *        responses:
+ *          202:
+ *            description: Accepted
+ *            content:
+ *              apppliaction/json:
+ *                schema:
+ *                  type: array
+ *                  items:
+ *                    $ref: '#/components/schemas/Result'
+ */
+router.post('/quizzes/:id/submit', async (req, res, next) => {
+  try {
+    const data = await ResultService.create(req.body.quiz);
+    return res.status(HttpStatus.ACCEPTED).json({ data });
+  } catch (e) {
+    next(e);
+  }
+});
+
+/**
+ *  @swagger
+ *  paths:
+ *    /api/v1/quizzes/{id}/result:
+ *      get:
+ *        summary: Get Quiz result
+ *        description: Fetch result of an evaluated Quiz
+ *        tags:
+ *          - Results
+ *        operationId: submit
+ *        parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: string
+ *            required: true
+ *            description: The id of the quiz to fetch results for
+ *        responses:
+ *          202:
+ *            description: Accepted
+ *            content:
+ *              apppliaction/json:
+ *                schema:
+ *                  type: array
+ *                  items:
+ *                    $ref: '#/components/schemas/Result'
+ */
+router.get('/quizzes/:id/result', async (req, res, next) => {
+  try {
+    const data = await ResultService.findOne({ quizId: req.params.id, userId: req.auth.id });
+    return res.status(HttpStatus.OK).json({ data });
   } catch (e) {
     next(e);
   }

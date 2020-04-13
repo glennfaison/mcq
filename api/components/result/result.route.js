@@ -6,41 +6,6 @@ const ResultService = require('./result.service');
 /**
  *  @swagger
  *  paths:
- *    /api/v1/results/submit:
- *      post:
- *        summary: Submit Quiz
- *        description: Submit an answered Quiz for evaluation
- *        tags:
- *          - Results
- *        operationId: submit
- *        parameters:
- *          - in: body
- *            schema:
- *              type: object
- *              properties:
- *                $ref: '#/components/schemas/Result'
- *        responses:
- *          202:
- *            description: Accepted
- *            content:
- *              apppliaction/json:
- *                schema:
- *                  type: array
- *                  items:
- *                    $ref: '#/components/schemas/Result'
- */
-router.post('/results/submit', async (req, res, next) => {
-  try {
-    const data = await ResultService.create(req.body.quiz);
-    return res.status(HttpStatus.ACCEPTED).json({ data });
-  } catch (e) {
-    next(e);
-  }
-});
-
-/**
- *  @swagger
- *  paths:
  *    /api/v1/results:
  *      get:
  *        summary: list quiz results
@@ -66,6 +31,42 @@ router.post('/results/submit', async (req, res, next) => {
  */
 router.get('/results', async (req, res, next) => {
   try {
+    const data = await ResultService.find(req.query);
+    return res.status(HttpStatus.OK).json({ data });
+  } catch (e) {
+    next(e);
+  }
+});
+
+/**
+ *  @swagger
+ *  paths:
+ *    /api/v1/results/me:
+ *      get:
+ *        summary: list my quiz results
+ *        description: Fetch the requester's `Results`
+ *        tags:
+ *          - Results
+ *        operationId: listMyResults
+ *        parameters:
+ *          - in: query
+ *            schema:
+ *              type: object
+ *              properties:
+ *                $ref: '#/components/schemas/Result'
+ *        responses:
+ *          200:
+ *            description: OK
+ *            content:
+ *              apppliaction/json:
+ *                schema:
+ *                  type: array
+ *                  items:
+ *                    $ref: '#/components/schemas/Result'
+ */
+router.get('/results/me', authGuard, async (req, res, next) => {
+  try {
+    // TODO: modify query to search for requester's results only
     const data = await ResultService.find(req.query);
     return res.status(HttpStatus.OK).json({ data });
   } catch (e) {
