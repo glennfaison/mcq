@@ -13,7 +13,7 @@ class GenericCrudService {
    *  Triggers the save() hook.
    *  @memberof GenericCrudService
    *  @param {any} properties
-   *  @returns {MongooseDocument}
+   *  @returns {Promise<MongooseDocument>}
    */
   create (properties) {
     return this.model.create(properties);
@@ -26,7 +26,7 @@ class GenericCrudService {
    *  @memberof GenericCrudService
    *  @param {string} id value of _id to query by
    *  @param {any} projection optional fields to return
-   *  @returns {MongooseDocument}
+   *  @returns {Promise<MongooseDocument>}
    */
   findById (id, projection) {
     return this.model.findById(id, projection);
@@ -38,7 +38,7 @@ class GenericCrudService {
    *  @memberof GenericCrudService
    *  @param {any} conditions
    *  @param {any} projection optional fields to return
-   *  @returns {MongooseDocument}
+   *  @returns {Promise<MongooseDocument>}
    */
   findOne (conditions, projection) {
     return this.model.findOne(conditions, projection);
