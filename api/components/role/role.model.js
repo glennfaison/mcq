@@ -45,10 +45,10 @@ const RoleSchema = new Schema(
       type: String,
       required: false
     },
-    privilegeIds: {
-      type: [Schema.Types.ObjectId],
+    privilegeIds: [{
+      type: Schema.Types.ObjectId,
       ref: collectionNames.PRIVILEGES
-    },
+    }],
     _isDeleted: {
       required: false,
       type: Boolean,
