@@ -12,27 +12,30 @@ function run () {
     return;
   }
 
-  const projectId = process.env.FIREBASE_PROJECT_ID;
-  if (!projectId && process.env.NODE_ENV === 'testing') {
+  if (process.env.NODE_ENV === 'testing') {
     return {
       auth: () => ({})
     };
   }
-  if (!projectId) {
-    console.log('FIREBASE_PROJECT_ID environment variable has not been set');
+
+  let options;
+  try {
+    options = {
+      apiKey: process.env.FIREBASE_API_KEY,
+      authDomain: `${process.env.FIREBASE_PROJECT_ID}.firebaseapp.com`,
+      databaseURL: `https://${process.env.FIREBASE_PROJECT_ID}.firebaseio.com`,
+      projectId: process.env.FIREBASE_PROJECT_ID,
+      storageBucket: `${process.env.FIREBASE_PROJECT_ID}.appspot.com`,
+      messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+      appId: process.env.FIREBASE_APP_ID,
+      measurementId: process.env.FIREBASE_MEASUREMENT_ID
+    };
+  } catch (e) {
+    console.log(e);
     process.exit(1);
   }
 
-  const app = firebase.initializeApp({
-    apiKey: process.env.FIREBASE_API_KEY,
-    authDomain: `${projectId}.firebaseapp.com`,
-    databaseURL: `https://${projectId}.firebaseio.com`,
-    projectId: projectId,
-    storageBucket: `${projectId}.appspot.com`,
-    messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-    appId: process.env.FIREBASE_APP_ID,
-    measurementId: process.env.FIREBASE_MEASUREMENT_ID
-  });
+  const app = firebase.initializeApp(options);
 
   return app;
 }
