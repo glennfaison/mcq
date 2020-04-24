@@ -1,10 +1,10 @@
-const UserModel = require('./user.model');
+const UserDAO = require('./user.dao');
 let firebaseAdminService = require('./firebase-admin.service');
 const GenericCrudService = require('../../helpers/generic-crud-service');
 
 class UserService extends GenericCrudService {
   constructor () {
-    super(UserModel);
+    super(UserDAO);
   }
 
   /**
@@ -16,7 +16,7 @@ class UserService extends GenericCrudService {
   }
 
   async create (user) {
-    const newUser = await UserModel.create(user);
+    const newUser = await UserDAO.create(user);
     const id = newUser.id.toString();
     try {
       let firebaseUser = await firebaseAdminService.createUser({ ...user, uid: id });
@@ -30,9 +30,9 @@ class UserService extends GenericCrudService {
       }
       // #endregion Sometimes, `createUser` returns `undefined`
 
-      return await UserModel.findOneAndUpdate({ _id: id }, firebaseUser, { new: true });
+      return await UserDAO.findOneAndUpdate({ _id: id }, firebaseUser, { new: true });
     } catch (e) {
-      UserModel.findOneAndDelete({ _id: id });
+      UserDAO.findOneAndDelete({ _id: id });
       firebaseAdminService.deleteUser(id);
       throw e;
     }

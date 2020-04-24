@@ -5,7 +5,7 @@ const collectionNames = require('../../../app.config').COLLECTION_NAMES;
  *  @swagger
  *  components:
  *    schemas:
- *      Topic:
+ *      Quiz:
  *        type: object
  *        properties:
  *          id:
@@ -14,8 +14,16 @@ const collectionNames = require('../../../app.config').COLLECTION_NAMES;
  *            type: string
  *          description:
  *            type: string
- *          courseId:
- *            type: string
+ *          topicIdList:
+ *            type: array
+ *            items:
+ *              type: string
+ *          questionIdList:
+ *            type: array
+ *            items:
+ *              type: string
+ *          expiresAt:
+ *            type: date
  *          createdBy:
  *            type: string
  *          _isDeleted:
@@ -27,13 +35,15 @@ const collectionNames = require('../../../app.config').COLLECTION_NAMES;
  *  {{
  *      name: string,
  *      description: string,
- *      courseId: string,
+ *      topicIdList: string[],
+ *      questionIdList: string[],
+ *      expiresAt: date,
  *      createdBy: string,
  *      _isDeleted: boolean,
  *    } & import('mongoose').MongooseDocument
- *  } Topic
+ *  } Quiz
  */
-const TopicSchema = new Schema(
+const QuizSchema = new Schema(
   {
     name: {
       type: String,
@@ -45,10 +55,17 @@ const TopicSchema = new Schema(
       type: String,
       required: true
     },
-    courseId: {
+    topicIdList: [{
       type: Schema.Types.ObjectId,
-      required: true,
-      ref: collectionNames.COURSES
+      ref: collectionNames.TOPICS
+    }],
+    questionIdList: [{
+      type: Schema.Types.ObjectId,
+      ref: collectionNames.QUESTIONS
+    }],
+    expiresAt: {
+      type: Date,
+      default: Date.now
     },
     createdBy: {
       required: true,
@@ -61,9 +78,9 @@ const TopicSchema = new Schema(
       default: false
     }
   },
-  { collection: collectionNames.TOPICS }
+  { collection: collectionNames.QUIZZES }
 );
 
-const TopicModel = model(collectionNames.TOPICS, TopicSchema);
+const QuizDAO = model(collectionNames.QUIZZES, QuizSchema);
 
-module.exports = TopicModel;
+module.exports = QuizDAO;

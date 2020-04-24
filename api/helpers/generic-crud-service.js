@@ -3,9 +3,9 @@
  *  Generic CRUD service
  */
 class GenericCrudService {
-  constructor (model) {
+  constructor (dao) {
     /** @type {Model} */
-    this.model = model;
+    this.dao = dao;
   }
 
   /**
@@ -16,7 +16,7 @@ class GenericCrudService {
    *  @returns {Promise<MongooseDocument>}
    */
   create (properties) {
-    return this.model.create(properties);
+    return this.dao.create(properties);
   }
 
   /**
@@ -29,7 +29,7 @@ class GenericCrudService {
    *  @returns {Promise<MongooseDocument>}
    */
   findById (id, projection) {
-    return this.model.findById(id, projection);
+    return this.dao.findById(id, projection);
   }
 
   /**
@@ -41,7 +41,7 @@ class GenericCrudService {
    *  @returns {Promise<MongooseDocument>}
    */
   findOne (conditions, projection) {
-    return this.model.findOne(conditions, projection);
+    return this.dao.findOne(conditions, projection);
   }
 
   /**
@@ -52,7 +52,7 @@ class GenericCrudService {
    *  @returns {Promise<boolean>}
    */
   exists (conditions) {
-    return this.model.exists(conditions);
+    return this.dao.exists(conditions);
   }
 
   /**
@@ -63,7 +63,7 @@ class GenericCrudService {
    * @returns {Promise<MongooseDocument[]>} an array of documents
    */
   find (conditions, projection) {
-    return this.model.find(conditions, projection);
+    return this.dao.find(conditions, projection);
   }
 
   /**
@@ -77,7 +77,7 @@ class GenericCrudService {
     delete properties.id;
     delete properties._id;
     try {
-      return this.model.findByIdAndUpdate(id, properties, { new: true });
+      return this.dao.findByIdAndUpdate(id, properties, { new: true });
     } catch (e) { return null; }
   }
 
@@ -92,7 +92,7 @@ class GenericCrudService {
     delete properties.id;
     delete properties._id;
     try {
-      return this.model.findOneAndUpdate(conditions, properties, { new: true });
+      return this.dao.findOneAndUpdate(conditions, properties, { new: true });
     } catch (e) { return null; }
   }
 
@@ -103,7 +103,7 @@ class GenericCrudService {
    *  @returns {Promise<MongooseDocument>} the deleted document
    */
   findByIdAndDelete (id) {
-    return this.model.findByIdAndDelete(id);
+    return this.dao.findByIdAndDelete(id);
   }
 
   /**
@@ -113,7 +113,7 @@ class GenericCrudService {
    *  @returns {Promise<MongooseDocument>} the deleted document
    */
   findOneAndDelete (conditions) {
-    return this.model.findOneAndDelete(conditions);
+    return this.dao.findOneAndDelete(conditions);
   }
 }
 

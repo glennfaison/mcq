@@ -5,22 +5,16 @@ const collectionNames = require('../../../app.config').COLLECTION_NAMES;
  *  @swagger
  *  components:
  *    schemas:
- *      Question:
+ *      Topic:
  *        type: object
  *        properties:
  *          id:
  *            type: string
- *          text:
+ *          name:
  *            type: string
- *          correctOptionIndices:
- *            type: array
- *            items:
- *              type: number
- *          optionList:
- *            type: array
- *            items:
- *              type: string
- *          topicId:
+ *          description:
+ *            type: string
+ *          courseId:
  *            type: string
  *          createdBy:
  *            type: string
@@ -31,27 +25,30 @@ const collectionNames = require('../../../app.config').COLLECTION_NAMES;
 /**
  *  @typedef
  *  {{
- *      text: string,
- *      correctOptionIndices: number[],
- *      optionList: string[],
- *      topicId: string,
+ *      name: string,
+ *      description: string,
+ *      courseId: string,
  *      createdBy: string,
  *      _isDeleted: boolean,
  *    } & import('mongoose').MongooseDocument
- *  } Question
+ *  } Topic
  */
-const QuestionSchema = new Schema(
+const TopicSchema = new Schema(
   {
-    text: {
+    name: {
+      type: String,
+      index: true,
+      required: true,
+      unique: false
+    },
+    description: {
       type: String,
       required: true
     },
-    correctOptionIndices: [Number],
-    optionList: [String],
-    topicId: {
+    courseId: {
       type: Schema.Types.ObjectId,
       required: true,
-      ref: collectionNames.TOPICS
+      ref: collectionNames.COURSES
     },
     createdBy: {
       required: true,
@@ -59,13 +56,14 @@ const QuestionSchema = new Schema(
       ref: collectionNames.USERS
     },
     _isDeleted: {
+      required: false,
       type: Boolean,
       default: false
     }
   },
-  { collection: collectionNames.QUESTIONS }
+  { collection: collectionNames.TOPICS }
 );
 
-const QuestionModel = model(collectionNames.QUESTIONS, QuestionSchema);
+const TopicDAO = model(collectionNames.TOPICS, TopicSchema);
 
-module.exports = QuestionModel;
+module.exports = TopicDAO;

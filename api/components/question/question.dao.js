@@ -5,25 +5,23 @@ const collectionNames = require('../../../app.config').COLLECTION_NAMES;
  *  @swagger
  *  components:
  *    schemas:
- *      Quiz:
+ *      Question:
  *        type: object
  *        properties:
  *          id:
  *            type: string
- *          name:
+ *          text:
  *            type: string
- *          description:
- *            type: string
- *          topicIdList:
+ *          correctOptionIndices:
+ *            type: array
+ *            items:
+ *              type: number
+ *          optionList:
  *            type: array
  *            items:
  *              type: string
- *          questionIdList:
- *            type: array
- *            items:
- *              type: string
- *          expiresAt:
- *            type: date
+ *          topicId:
+ *            type: string
  *          createdBy:
  *            type: string
  *          _isDeleted:
@@ -33,39 +31,27 @@ const collectionNames = require('../../../app.config').COLLECTION_NAMES;
 /**
  *  @typedef
  *  {{
- *      name: string,
- *      description: string,
- *      topicIdList: string[],
- *      questionIdList: string[],
- *      expiresAt: date,
+ *      text: string,
+ *      correctOptionIndices: number[],
+ *      optionList: string[],
+ *      topicId: string,
  *      createdBy: string,
  *      _isDeleted: boolean,
  *    } & import('mongoose').MongooseDocument
- *  } Quiz
+ *  } Question
  */
-const QuizSchema = new Schema(
+const QuestionSchema = new Schema(
   {
-    name: {
-      type: String,
-      index: true,
-      required: true,
-      unique: false
-    },
-    description: {
+    text: {
       type: String,
       required: true
     },
-    topicIdList: [{
+    correctOptionIndices: [Number],
+    optionList: [String],
+    topicId: {
       type: Schema.Types.ObjectId,
+      required: true,
       ref: collectionNames.TOPICS
-    }],
-    questionIdList: [{
-      type: Schema.Types.ObjectId,
-      ref: collectionNames.QUESTIONS
-    }],
-    expiresAt: {
-      type: Date,
-      default: Date.now
     },
     createdBy: {
       required: true,
@@ -73,14 +59,13 @@ const QuizSchema = new Schema(
       ref: collectionNames.USERS
     },
     _isDeleted: {
-      required: false,
       type: Boolean,
       default: false
     }
   },
-  { collection: collectionNames.QUIZZES }
+  { collection: collectionNames.QUESTIONS }
 );
 
-const QuizModel = model(collectionNames.QUIZZES, QuizSchema);
+const QuestionDAO = model(collectionNames.QUESTIONS, QuestionSchema);
 
-module.exports = QuizModel;
+module.exports = QuestionDAO;

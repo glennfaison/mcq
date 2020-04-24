@@ -58,6 +58,6 @@ const PrivilegeSchema = new Schema(
   { collection: collectionNames.PRIVILEGES }
 );
 
-const PrivilegeModel = model(collectionNames.PRIVILEGES, PrivilegeSchema);
+const PrivilegeDAO = model(collectionNames.PRIVILEGES, PrivilegeSchema);
 
-module.exports = PrivilegeModel;
+module.exports = PrivilegeDAO;

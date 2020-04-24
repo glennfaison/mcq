@@ -63,6 +63,6 @@ const CourseSchema = new Schema(
   { collection: collectionNames.COURSES }
 );
 
-const CourseModel = model(collectionNames.COURSES, CourseSchema);
+const CourseDAO = model(collectionNames.COURSES, CourseSchema);
 
-module.exports = CourseModel;
+module.exports = CourseDAO;

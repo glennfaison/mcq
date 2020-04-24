@@ -1,9 +1,9 @@
-const QuestionModel = require('./question.model');
+const QuestionDAO = require('./question.dao');
 const GenericCrudService = require('../../helpers/generic-crud-service');
 
 class QuestionService extends GenericCrudService {
   constructor () {
-    super(QuestionModel);
+    super(QuestionDAO);
   }
 }
 

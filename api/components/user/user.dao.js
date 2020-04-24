@@ -104,7 +104,7 @@ const UserSchema = new Schema({
 }, { collection: collectionNames.USERS });
 
 UserSchema.methods.toJSON = function () {
-  const user = {
+  return {
     id: this.id,
     _id: this._id,
     uid: this.uid,
@@ -117,12 +117,11 @@ UserSchema.methods.toJSON = function () {
     passwordHash: this.passwordHash,
     passwordSalt: this.passwordSalt,
     tokensValidAfterTime: this.tokensValidAfterTime,
-    roleId: this.roleId
+    roleId: this.roleId,
+    ...(this.password && { password: this.password })
   };
-  if (this.password) { user.password = this.password; }
-  return user;
 };
 
-const UserModel = model(collectionNames.USERS, UserSchema);
+const UserDAO = model(collectionNames.USERS, UserSchema);
 
-module.exports = UserModel;
+module.exports = UserDAO;

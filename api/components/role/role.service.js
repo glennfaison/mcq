@@ -1,9 +1,9 @@
-const RoleModel = require('./role.model');
+const RoleDAO = require('./role.dao');
 const GenericCrudService = require('../../helpers/generic-crud-service');
 
 class RoleService extends GenericCrudService {
   constructor () {
-    super(RoleModel);
+    super(RoleDAO);
   }
 }
 

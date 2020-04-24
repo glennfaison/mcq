@@ -1,15 +1,15 @@
-const ResultModel = require('./result.model');
+const ResultDAO = require('./result.dao');
 const QuestionService = require('../question/question.service');
 const GenericCrudService = require('../../helpers/generic-crud-service');
 
 class ResultService extends GenericCrudService {
   constructor () {
-    super(ResultModel);
+    super(ResultDAO);
   }
 
   /**
    *  Evaluate a user's answer
-   *  @memberof _QuizResultService
+   *  @memberof ResultService
    *  @param {UserAnswer} userAnswer
    *  @returns {Promise<UserAnswer>} the corrected `UserAnswer`
    */
@@ -27,9 +27,9 @@ class ResultService extends GenericCrudService {
 
   /**
    *  Evaluate a user's Quiz submission
-   *  @param {QuizResult} quizResult
-   *  @memberof _QuizResultService
-   *  @returns {QuizResult} the corrected `QuizResult`
+   *  @param {Result} quizResult
+   *  @memberof ResultService
+   *  @returns {Result} the corrected `QuizResult`
    */
   async evaluateQuiz (quizResult) {
     const promises = quizResult.userAnswerList.map(this.evaluateUserAnswer);

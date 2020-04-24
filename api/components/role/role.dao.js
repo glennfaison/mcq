@@ -58,6 +58,6 @@ const RoleSchema = new Schema(
   { collection: collectionNames.ROLES }
 );
 
-const RoleModel = model(collectionNames.ROLES, RoleSchema);
+const RoleDAO = model(collectionNames.ROLES, RoleSchema);
 
-module.exports = RoleModel;
+module.exports = RoleDAO;
