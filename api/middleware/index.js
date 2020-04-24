@@ -1,4 +1,7 @@
+const authGuard = require('./auth-guard');
+const adminGuard = require('./admin-guard');
+
 module.exports = {
-  authGuard: require('./auth-guard'),
-  adminGuard: require('./admin-guard')
+  authGuard: authGuard,
+  adminGuard: adminGuard
 };

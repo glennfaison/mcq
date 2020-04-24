@@ -224,47 +224,4 @@ router.post('/quizzes/:id/submit', authGuard, async (req, res, next) => {
   }
 });
 
-/**
- *  @swagger
- *  paths:
- *    /api/v1/quizzes/{id}/result:
- *      get:
- *        summary: Get Requester's Quiz result
- *        description: Fetch result of requester's evaluated Quiz
- *        tags:
- *          - Results
- *        operationId: submit
- *        parameters:
- *          - in: path
- *            name: id
- *            schema:
- *              type: string
- *            required: true
- *            description: The id of the quiz to fetch results for
- *        responses:
- *          202:
- *            description: Accepted
- *            content:
- *              apppliaction/json:
- *                schema:
- *                  type: array
- *                  items:
- *                    $ref: '#/components/schemas/Result'
- */
-router.get('/quizzes/:id/result', authGuard, async (req, res, next) => {
-  try {
-    let { expiresAt } = await QuizService.findById(req.params.id);
-    expiresAt = new Date(expiresAt);
-    if (expiresAt.getTime() > Date.now()) {
-      return res.status(HttpStatus.ACCEPTED).json({
-        message: `The results are to be published on ${expiresAt.toLocaleDateString()}`
-      });
-    }
-    const data = await ResultService.findOne({ quizId: req.params.id, userId: req.auth.id });
-    return res.status(HttpStatus.OK).json({ data });
-  } catch (e) {
-    next(e);
-  }
-});
-
 module.exports = router;
