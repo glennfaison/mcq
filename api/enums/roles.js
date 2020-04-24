@@ -1,10 +1,12 @@
 /**
- * Enum for Roles.
- * @readonly
- * @enum {string}
+ *  Enum for Roles.
+ *  @readonly
+ *  @enum {string}
  */
 let Roles = {
+  /** @type {Roles} */
   ADMINISTRATOR: 'ADMINISTRATOR',
+  /** @type {Roles} */
   DEFAULT: 'DEFAULT'
 };
 
@@ -15,5 +17,7 @@ Roles = new Proxy(Roles, {
   },
   set: () => {}
 });
+
+/** @typedef {'ADMINISTRATOR'|'DEFAULT'} Roles */
 
 module.exports = Roles;

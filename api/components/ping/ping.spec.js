@@ -1,11 +1,12 @@
 const { describe, it } = require('mocha');
 const chai = require('chai');
-const { expect } = chai;
 const chaiHttp = require('chai-http');
 const HttpStatus = require('http-status-codes');
-chai.use(chaiHttp);
 
 const createApplication = require('../../app');
+
+const { expect } = chai;
+chai.use(chaiHttp);
 const app = createApplication();
 
 describe('ping test', () => {

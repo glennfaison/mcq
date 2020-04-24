@@ -1,5 +1,7 @@
 const HttpStatus = require('http-status-codes');
-const router = require('express').Router();
+const { Router } = require('express');
+
+const router = Router();
 
 /**
  *  @swagger

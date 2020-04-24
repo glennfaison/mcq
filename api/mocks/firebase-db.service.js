@@ -1,12 +1,9 @@
+const crypto = require('crypto');
+
 class FirebaseDb {}
 
 FirebaseDb.makeId = (length) => {
-  const characters = '0123456789abcdef';
-  const result = new Array(length)
-    .fill('')
-    .map(() => characters.charAt(Math.floor(Math.random() * characters.length)))
-    .join('');
-  return result;
+  return crypto.randomBytes(24).toString('hex').substring(0, length);
 };
 
 FirebaseDb.clearDb = () => {

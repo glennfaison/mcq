@@ -1,7 +1,9 @@
-const router = require('express').Router();
+const { Router } = require('express');
 const HttpStatus = require('http-status-codes');
 const { authGuard, adminGuard } = require('../../middleware');
 const QuestionService = require('./question.service');
+
+const router = Router();
 
 /**
  *  @swagger

@@ -1,12 +1,9 @@
 const { describe, it, before, after, beforeEach } = require('mocha');
 const chai = require('chai');
-const { expect } = chai;
 const chaiHttp = require('chai-http');
 const HttpStatus = require('http-status-codes');
-chai.use(chaiHttp);
 
 const createApplication = require('../../app');
-const app = createApplication();
 const FirebaseDb = require('../../mocks/firebase-db.service');
 const { initializeTest, mongodbHelper, userHelper } = require('../../helpers');
 const seedRoles = require('../role/role.seeder');
@@ -14,6 +11,10 @@ const seedUsers = require('../user/user.seeder');
 const seedCourses = require('../course/course.seeder');
 const seedTopics = require('../topic/topic.seeder');
 const seedQuestions = require('../question/question.seeder');
+
+const { expect } = chai;
+chai.use(chaiHttp);
+const app = createApplication();
 
 let users = {
   admin: { user: null, idToken: null },

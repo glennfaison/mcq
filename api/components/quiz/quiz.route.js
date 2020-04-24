@@ -1,8 +1,10 @@
-const router = require('express').Router();
+const { Router } = require('express');
 const HttpStatus = require('http-status-codes');
 const { authGuard, adminGuard } = require('../../middleware');
 const QuizService = require('./quiz.service');
 const ResultService = require('../result/result.service');
+
+const router = Router();
 
 /**
  *  @swagger

@@ -1,7 +1,7 @@
 const crypto = require('crypto');
 const FirebaseDb = require('./firebase-db.service');
 
-class _FirebaseAdmin {
+class FirebaseAdminMock {
   async createUser (properties) {
     properties = { ...properties };
     if (!properties.uid && (properties._id || properties.id)) {
@@ -80,8 +80,8 @@ class _FirebaseAdmin {
 }
 
 /**
- *  @type {_FirebaseAdmin & import('firebase-admin').auth.Auth}
+ *  @type {FirebaseAdminMock & import('firebase-admin').auth.Auth}
  */
-const admin = new _FirebaseAdmin();
+const admin = new FirebaseAdminMock();
 
 module.exports = admin;

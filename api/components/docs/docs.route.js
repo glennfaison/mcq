@@ -1,8 +1,10 @@
-const router = require('express').Router();
+const { Router } = require('express');
 const swaggerUi = require('swagger-ui-express');
 const HttpStatus = require('http-status-codes');
 
 const swaggerDocument = require('./swagger-def');
+
+const router = Router();
 
 /**
  *  @swagger

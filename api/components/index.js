@@ -1,18 +1,31 @@
-const router = require('express').Router();
+const { Router } = require('express');
 
+const pingRoutes = require('ping/ping.route');
+const docsRoutes = require('docs/docs.route');
+const authRoutes = require('auth/auth.route');
+const userRoutes = require('user/user.route');
+const courseRoutes = require('course/course.route');
+const topicRoutes = require('topic/topic.route');
+const questionRoutes = require('question/question.route');
+const quizRoutes = require('quiz/quiz.route');
+const resultRoutes = require('result/result.route');
+const roleRoutes = require('role/role.route');
+const privilegeRoutes = require('privilege/privilege.route');
+
+const router = Router();
 const baseApi = '/api/v1';
 
 // Perform the final set up of routes here
-router.use('/', require('./ping/ping.route'));
-router.use(baseApi, require('./docs/docs.route'));
-router.use(baseApi, require('./auth/auth.route'));
-router.use(baseApi, require('./user/user.route'));
-router.use(baseApi, require('./course/course.route'));
-router.use(baseApi, require('./topic/topic.route'));
-router.use(baseApi, require('./question/question.route'));
-router.use(baseApi, require('./quiz/quiz.route'));
-router.use(baseApi, require('./result/result.route'));
-router.use(baseApi, require('./role/role.route'));
-router.use(baseApi, require('./privilege/privilege.route'));
+router.use('/', pingRoutes);
+router.use(baseApi, docsRoutes);
+router.use(baseApi, authRoutes);
+router.use(baseApi, userRoutes);
+router.use(baseApi, courseRoutes);
+router.use(baseApi, topicRoutes);
+router.use(baseApi, questionRoutes);
+router.use(baseApi, quizRoutes);
+router.use(baseApi, resultRoutes);
+router.use(baseApi, roleRoutes);
+router.use(baseApi, privilegeRoutes);
 
 module.exports = router;

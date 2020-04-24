@@ -2,7 +2,9 @@ const configureAndStartMongoose = require('./api/configuration/mongoose');
 const seedRoles = require('./api/components/role/role.seeder');
 const seedUsers = require('./api/components/user/user.seeder');
 const createServer = require('./api/server');
-require('dotenv').config();
+const { config } = require('dotenv');
+
+config();
 
 async function init () {
   await configureAndStartMongoose();
@@ -15,7 +17,6 @@ async function init () {
 }
 
 init().then(server => {
-  // Start the server
   server.listen(process.env.PORT, async () => {
     console.log(`Listening at http://localhost:${process.env.PORT} in ${process.env.NODE_ENV} mode`);
   });

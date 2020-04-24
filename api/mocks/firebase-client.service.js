@@ -2,7 +2,7 @@ const crypto = require('crypto');
 const firebaseAdmin = require('./firebase-admin.service');
 const FirebaseDb = require('./firebase-db.service');
 
-class _FirebaseClient {
+class FirebaseClientMock {
   async signInWithEmailAndPassword (email, password) {
     const user = await firebaseAdmin.getUserByEmail(email);
 
@@ -18,6 +18,6 @@ class _FirebaseClient {
   }
 }
 
-const client = new _FirebaseClient();
+const client = new FirebaseClientMock();
 
 module.exports = client;

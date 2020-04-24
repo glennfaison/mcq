@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
-require('dotenv').config();
+const { config } = require('dotenv');
+
+config();
 
 let mongooseConnection;
 

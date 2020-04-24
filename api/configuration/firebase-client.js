@@ -1,5 +1,7 @@
 const firebase = require('firebase');
-require('dotenv').config();
+const { config } = require('dotenv');
+
+config();
 
 /**
  *  Initialize the firebase client service

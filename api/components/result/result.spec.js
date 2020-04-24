@@ -1,12 +1,9 @@
 const { describe, it, before, after, beforeEach } = require('mocha');
 const chai = require('chai');
-const { expect } = chai;
 const chaiHttp = require('chai-http');
 const HttpStatus = require('http-status-codes');
-chai.use(chaiHttp);
 
 const createApplication = require('../../app');
-const app = createApplication();
 const FirebaseDb = require('../../mocks/firebase-db.service');
 const { initializeTest, mongodbHelper, userHelper } = require('../../helpers');
 const seedRoles = require('../role/role.seeder');
@@ -16,11 +13,15 @@ const seedTopics = require('../topic/topic.seeder');
 const seedQuestions = require('../question/question.seeder');
 const seedQuizzes = require('../quiz/quiz.seeder');
 
+const { expect } = chai;
+chai.use(chaiHttp);
+const app = createApplication();
+
 let users = {
   admin: { user: null, idToken: null },
   defaultUser1: { user: null, idToken: null }
 };
-let testAdmin, testUser1, testResult, testQuiz;
+let testAdmin, testUser1, testQuiz;
 
 describe('Results Endpoint Test', () => {
   before(async () => {

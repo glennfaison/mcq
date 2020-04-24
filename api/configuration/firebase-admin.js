@@ -1,5 +1,7 @@
 const firebaseAdmin = require('firebase-admin');
-require('dotenv').config();
+const { config } = require('dotenv');
+
+config();
 
 /**
  *  Initialize the firebase admin service
