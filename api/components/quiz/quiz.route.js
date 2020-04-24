@@ -182,8 +182,8 @@ router.delete('/quizzes/:id', authGuard, adminGuard, async (req, res, next) => {
  *  paths:
  *    /api/v1/quizzes/{id}/submit:
  *      post:
- *        summary: Submit Quiz
- *        description: Submit an answered Quiz for evaluation
+ *        summary: Make Quiz submission
+ *        description: Submit requester's answered Quiz for evaluation
  *        tags:
  *          - Results
  *        operationId: submit
@@ -203,9 +203,19 @@ router.delete('/quizzes/:id', authGuard, adminGuard, async (req, res, next) => {
  *                  items:
  *                    $ref: '#/components/schemas/Result'
  */
-router.post('/quizzes/:id/submit', async (req, res, next) => {
+router.post('/quizzes/:id/submit', authGuard, async (req, res, next) => {
   try {
-    const data = await ResultService.create(req.body.quiz);
+    const exists = await ResultService.exists({ quizId: req.params.id, userId: req.auth.id });
+    if (exists) {
+      return res.status(HttpStatus.BAD_REQUEST).json({
+        errors: 'A submission already exists with the given \'quizId\' and \'userId\' fields'
+      });
+    }
+    const data = await ResultService.create({
+      ...req.body.submission,
+      quizId: req.params.id,
+      userId: req.auth.id
+    });
     return res.status(HttpStatus.ACCEPTED).json({ data });
   } catch (e) {
     next(e);
@@ -217,8 +227,8 @@ router.post('/quizzes/:id/submit', async (req, res, next) => {
  *  paths:
  *    /api/v1/quizzes/{id}/result:
  *      get:
- *        summary: Get Quiz result
- *        description: Fetch result of an evaluated Quiz
+ *        summary: Get Requester's Quiz result
+ *        description: Fetch result of requester's evaluated Quiz
  *        tags:
  *          - Results
  *        operationId: submit
@@ -239,8 +249,15 @@ router.post('/quizzes/:id/submit', async (req, res, next) => {
  *                  items:
  *                    $ref: '#/components/schemas/Result'
  */
-router.get('/quizzes/:id/result', async (req, res, next) => {
+router.get('/quizzes/:id/result', authGuard, async (req, res, next) => {
   try {
+    let { expiresAt } = await QuizService.findById(req.params.id);
+    expiresAt = new Date(expiresAt);
+    if (expiresAt.getTime() > Date.now()) {
+      return res.status(HttpStatus.ACCEPTED).json({
+        message: `The results are to be published on ${expiresAt.toLocaleDateString()}`
+      });
+    }
     const data = await ResultService.findOne({ quizId: req.params.id, userId: req.auth.id });
     return res.status(HttpStatus.OK).json({ data });
   } catch (e) {

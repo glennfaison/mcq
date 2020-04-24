@@ -25,7 +25,7 @@ class GenericCrudService {
    *  findById() triggers findOne hooks.
    *  @memberof GenericCrudService
    *  @param {string} id value of _id to query by
-   *  @param {any} projection optional fields to return
+   *  @param {any} [projection] optional fields to return
    *  @returns {Promise<MongooseDocument>}
    */
   findById (id, projection) {
@@ -37,7 +37,7 @@ class GenericCrudService {
    *  before the command is sent.
    *  @memberof GenericCrudService
    *  @param {any} conditions
-   *  @param {any} projection optional fields to return
+   *  @param {any} [projection] optional fields to return
    *  @returns {Promise<MongooseDocument>}
    */
   findOne (conditions, projection) {
@@ -59,7 +59,7 @@ class GenericCrudService {
    *  Finds documents.
    * @memberof GenericCrudService
    * @param {any} conditions
-   * @param {any} projection optional fields to return
+   * @param {any} [projection] optional fields to return
    * @returns {Promise<MongooseDocument[]>} an array of documents
    */
   find (conditions, projection) {
@@ -85,7 +85,7 @@ class GenericCrudService {
    *  Find a document matching the `conditions`, and update it with `properties`.
    *  @memberof GenericCrudService
    *  @param {string} conditions values to query by
-   *  @param {any} properties
+   *  @param {any} [properties]
    *  @returns {Promise<MongooseDocument>} the updated document
    */
   findOneAndUpdate (conditions, properties) {

@@ -107,6 +107,8 @@ const ResultSchema = new Schema(
   { collection: collectionNames.RESULTS }
 );
 
+ResultSchema.index({ userId: 1, quizId: 1 }, { unique: true });
+
 const ResultModel = model(collectionNames.RESULTS, ResultSchema);
 
 module.exports = ResultModel;

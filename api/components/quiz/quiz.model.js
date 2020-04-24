@@ -65,8 +65,7 @@ const QuizSchema = new Schema(
     }],
     expiresAt: {
       type: Date,
-      // 24 hours from creation time
-      default: () => Date.now() + (24 * 60 * 60 * 1000)
+      default: Date.now
     },
     createdBy: {
       required: true,

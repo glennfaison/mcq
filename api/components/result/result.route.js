@@ -29,44 +29,8 @@ const ResultService = require('./result.service');
  *                  items:
  *                    $ref: '#/components/schemas/Result'
  */
-router.get('/results', async (req, res, next) => {
+router.get('/results', authGuard, adminGuard, async (req, res, next) => {
   try {
-    const data = await ResultService.find(req.query);
-    return res.status(HttpStatus.OK).json({ data });
-  } catch (e) {
-    next(e);
-  }
-});
-
-/**
- *  @swagger
- *  paths:
- *    /api/v1/results/me:
- *      get:
- *        summary: list my quiz results
- *        description: Fetch the requester's `Results`
- *        tags:
- *          - Results
- *        operationId: listMyResults
- *        parameters:
- *          - in: query
- *            schema:
- *              type: object
- *              properties:
- *                $ref: '#/components/schemas/Result'
- *        responses:
- *          200:
- *            description: OK
- *            content:
- *              apppliaction/json:
- *                schema:
- *                  type: array
- *                  items:
- *                    $ref: '#/components/schemas/Result'
- */
-router.get('/results/me', authGuard, async (req, res, next) => {
-  try {
-    // TODO: modify query to search for requester's results only
     const data = await ResultService.find(req.query);
     return res.status(HttpStatus.OK).json({ data });
   } catch (e) {
@@ -99,7 +63,7 @@ router.get('/results/me', authGuard, async (req, res, next) => {
  *                schema:
  *                  $ref: '#/components/schemas/Result'
  */
-router.get('/results/:id', async (req, res, next) => {
+router.get('/results/:id', authGuard, adminGuard, async (req, res, next) => {
   try {
     const data = await ResultService.findById(req.params.id);
     if (!data) { return res.sendStatus(HttpStatus.NOT_FOUND); }
@@ -134,6 +98,42 @@ router.delete('/results/:id', authGuard, adminGuard, async (req, res, next) => {
   try {
     await ResultService.findByIdAndDelete(req.params.id);
     return res.sendStatus(HttpStatus.NO_CONTENT);
+  } catch (e) {
+    next(e);
+  }
+});
+
+/**
+ *  @swagger
+ *  paths:
+ *    /api/v1/users/me/results:
+ *      get:
+ *        summary: list my quiz results
+ *        description: Fetch the requester's `Results`
+ *        tags:
+ *          - Results
+ *        operationId: listMyResults
+ *        parameters:
+ *          - in: query
+ *            schema:
+ *              type: object
+ *              properties:
+ *                $ref: '#/components/schemas/Result'
+ *        responses:
+ *          200:
+ *            description: OK
+ *            content:
+ *              apppliaction/json:
+ *                schema:
+ *                  type: array
+ *                  items:
+ *                    $ref: '#/components/schemas/Result'
+ */
+router.get('/users/me/results', authGuard, async (req, res, next) => {
+  try {
+    req.query = { ...req.query, userId: req.auth.id };
+    const data = await ResultService.find(req.query);
+    return res.status(HttpStatus.OK).json({ data });
   } catch (e) {
     next(e);
   }

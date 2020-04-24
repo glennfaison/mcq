@@ -32,6 +32,7 @@ let testUser1 = {
 };
 let testQuiz;
 let tempQuiz = {};
+const tempSubmission = {};
 
 describe('Quizzes Endpoint Test', () => {
   before(async () => {
@@ -63,15 +64,15 @@ describe('Quizzes Endpoint Test', () => {
     tempQuiz = await seedQuizzes.generateOne();
   });
 
-  describe('POST /api/v1/quizzes', () => {
-    it('should fail with a status 401 if the requester is signed in', async () => {
-      const res = await chai.request(app).post('/api/v1/quizzes').send({ quiz: tempQuiz });
+  describe('POST ' + testURI``, () => {
+    it('should fail with a status 401 if the requester is not signed in', async () => {
+      const res = await chai.request(app).post(testURI``).send({ quiz: tempQuiz });
       expect(res.error).to.be.an('error');
       expect(res).to.have.status(HttpStatus.UNAUTHORIZED);
     });
 
     it('should fail with a status 401 if the requester is not admin', async () => {
-      const res = await chai.request(app).post('/api/v1/quizzes')
+      const res = await chai.request(app).post(testURI``)
         .set('Authorization', users.defaultUser1.idToken).send({ quiz: tempQuiz });
       expect(res.error).to.be.an('error');
       expect(res).to.have.status(HttpStatus.UNAUTHORIZED);
@@ -79,14 +80,14 @@ describe('Quizzes Endpoint Test', () => {
 
     it('should fail with a status 401 if the `createdBy` field is not set', async () => {
       delete tempQuiz.createdBy;
-      const res = await chai.request(app).post('/api/v1/quizzes')
+      const res = await chai.request(app).post(testURI``)
         .set('Authorization', users.admin.idToken).send({ quiz: tempQuiz });
       expect(res.error).to.be.an('error');
       expect(res).to.have.status(HttpStatus.UNPROCESSABLE_ENTITY);
     });
 
     it('should create a quiz, and return a status of 201', async () => {
-      const res = await chai.request(app).post('/api/v1/quizzes')
+      const res = await chai.request(app).post(testURI``)
         .set('Authorization', users.admin.idToken).send({ quiz: tempQuiz });
       expect(res.error).to.be.false;
       expect(res.body.data).to.be.an('object');
@@ -94,18 +95,18 @@ describe('Quizzes Endpoint Test', () => {
     });
   });
 
-  describe('GET /api/v1/quizzes', () => {
+  describe(`GET ${testURI``}`, () => {
     it('should fetch all quizzes and have a status of 200', async () => {
-      const res = await chai.request(app).get('/api/v1/quizzes');
+      const res = await chai.request(app).get(testURI``);
       expect(res.error).to.be.false;
       expect(res.body.data).to.be.an('array');
       expect(res).to.have.status(HttpStatus.OK);
     });
   });
 
-  describe('GET /api/v1/quizzes/:id', () => {
+  describe(`GET ${testURI`:id`}`, () => {
     it('should fetch quiz details by id if they exist', async () => {
-      const res = await chai.request(app).get(`/api/v1/quizzes/${testQuiz.id}`);
+      const res = await chai.request(app).get(testURI`${testQuiz.id}`);
       expect(res.error).to.be.false;
       expect(res.body.data).to.be.an('object');
       expect(res).to.have.status(HttpStatus.OK);
@@ -113,15 +114,15 @@ describe('Quizzes Endpoint Test', () => {
 
     it('should return 404 if there\'s no quiz with the given id', async () => {
       const fakeId = FirebaseDb.makeId(24);
-      const res = await chai.request(app).get(`/api/v1/quizzes/${fakeId}`);
+      const res = await chai.request(app).get(testURI`${fakeId}`);
       expect(res.error).to.be.an('error');
       expect(res).to.have.status(HttpStatus.NOT_FOUND);
     });
   });
 
-  describe('PUT /api/v1/quizzes/:id', () => {
+  describe(`PUT ${testURI`:id`}`, () => {
     it('should fail with a status 401, if the requester is not an administrator', async () => {
-      const res = await chai.request(app).put(`/api/v1/quizzes/${testQuiz.id}`)
+      const res = await chai.request(app).put(testURI`${testQuiz.id}`)
         .set('Authorization', users.defaultUser1.idToken).send({ quiz: tempQuiz });
       expect(res.error).to.be.an('error');
       expect(res).to.have.status(HttpStatus.UNAUTHORIZED);
@@ -129,34 +130,92 @@ describe('Quizzes Endpoint Test', () => {
 
     it('should return 404 if there\'s no quiz with the given id', async () => {
       const fakeId = FirebaseDb.makeId(24);
-      const res = await chai.request(app).put(`/api/v1/quizzes/${fakeId}`)
+      const res = await chai.request(app).put(testURI`${fakeId}`)
         .set('Authorization', users.admin.idToken).send({ quiz: tempQuiz });
       expect(res.error).to.be.an('error');
       expect(res).to.have.status(HttpStatus.NOT_FOUND);
     });
 
     it('should update quiz information', async () => {
-      const res = await chai.request(app).put(`/api/v1/quizzes/${testQuiz.id}`)
+      const res = await chai.request(app).put(testURI`${testQuiz.id}`)
         .set('Authorization', users.admin.idToken).send({ quiz: tempQuiz });
       expect(res.body.data).to.not.be.empty;
       expect(res).to.have.status(HttpStatus.OK);
     });
   });
 
-  describe('DELETE /api/v1/quizzes/:id', () => {
+  describe(`DELETE ${testURI`:id`}`, () => {
     it('should fail with a status 401, if the requester is not an administrator', async () => {
-      const res = await chai.request(app).delete(`/api/v1/quizzes/${testQuiz.id}`)
+      const res = await chai.request(app).delete(testURI`${testQuiz.id}`)
         .set('Authorization', users.defaultUser1.idToken);
       expect(res.error).to.be.an('error');
       expect(res).to.have.status(HttpStatus.UNAUTHORIZED);
     });
 
     it('should return a status of 204, if the requester is an administrator', async () => {
-      const res = await chai.request(app).delete(`/api/v1/quizzes/${testQuiz.id}`)
+      const res = await chai.request(app).delete(testURI`${testQuiz.id}`)
         .set('Authorization', users.admin.idToken);
       expect(res.error).to.be.false;
       expect(res.body).to.be.empty;
       expect(res).to.have.status(HttpStatus.NO_CONTENT);
     });
   });
+
+  describe('POST /api/v1/quizzes/:id/submit', () => {
+    it('should fail with a status 401 if the requester is not signed in', async () => {
+      const res = await chai.request(app).post(`/api/v1/quizzes/${testQuiz.id}/submit`)
+        .send({ submission: tempSubmission });
+      expect(res.error).to.be.an('error');
+      expect(res).to.have.status(HttpStatus.UNAUTHORIZED);
+    });
+
+    it('should make the submission, and return a status of 202', async () => {
+      const res = await chai.request(app).post(`/api/v1/quizzes/${testQuiz.id}/submit`)
+        .set('Authorization', users.defaultUser1.idToken).send({ submission: tempSubmission });
+      expect(res.error).to.be.false;
+      expect(res.body.data).to.be.an('object');
+      expect(res).to.have.status(HttpStatus.ACCEPTED);
+    });
+
+    it('should fail with a status 400 if the submission exists already', async () => {
+      await chai.request(app).post(`/api/v1/quizzes/${testQuiz.id}/submit`)
+        .set('Authorization', users.defaultUser1.idToken).send({ submission: tempSubmission });
+      const res = await chai.request(app).post(`/api/v1/quizzes/${testQuiz.id}/submit`)
+        .set('Authorization', users.defaultUser1.idToken).send({ submission: tempSubmission });
+      expect(res.error).to.be.an('error');
+      expect(res).to.have.status(HttpStatus.BAD_REQUEST);
+    });
+  });
+
+  describe('GET /api/v1/quizzes/:id/result', () => {
+    it('should fail with a status 401 if the requester is not signed in', async () => {
+      const res = await chai.request(app).get(`/api/v1/quizzes/${testQuiz.id}/result`);
+      expect(res.error).to.be.an('error');
+      expect(res).to.have.status(HttpStatus.UNAUTHORIZED);
+    });
+
+    it('should return a status 202 if the date for result release has not passed', async () => {
+      const QuizService = require('./quiz.service');
+      // Set `expiresAt` to 1 million seconds after creation
+      await QuizService.findByIdAndUpdate(testQuiz.id, { expiresAt: Date.now() + 10 ** 6 });
+      const res = await chai.request(app).get(`/api/v1/quizzes/${testQuiz.id}/result`)
+        .set('Authorization', users.defaultUser1.idToken);
+      expect(res.error).to.be.false;
+      expect(res).to.have.status(HttpStatus.ACCEPTED);
+    });
+
+    it('should fetch the result, and return a status of 200', async () => {
+      const res = await chai.request(app).get(`/api/v1/quizzes/${testQuiz.id}/result`)
+        .set('Authorization', users.defaultUser1.idToken);
+      expect(res.error).to.be.false;
+      // expect(res.body.data).to.be.an('object');
+      expect(res).to.have.status(HttpStatus.OK);
+    });
+  });
 });
+
+function testURI (paths, id) {
+  let res = '/api/v1/quizzes';
+  if (id) { res += `/${id}`; }
+  return res;
+}
