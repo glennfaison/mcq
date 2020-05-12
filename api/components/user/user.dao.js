@@ -56,8 +56,7 @@ const collectionNames = require('../../../app.config').COLLECTION_NAMES;
  */
 const UserSchema = new Schema({
   uid: {
-    type: String,
-    unique: true
+    type: String
   },
   email: {
     type: String,
