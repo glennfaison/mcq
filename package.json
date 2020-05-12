@@ -1,7 +1,7 @@
 {
   "name": "mcq",
   "version": "1.0.0",
-  "description": "API to a MCQ web service",
+  "description": "A REST API for an MCQ web application, with a MongoDB database.",
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js",
